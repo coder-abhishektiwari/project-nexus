@@ -14,16 +14,227 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          college: string | null
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          updated_at: string
+          year: string | null
+        }
+        Insert: {
+          college?: string | null
+          created_at?: string
+          email: string
+          full_name: string
+          id: string
+          updated_at?: string
+          year?: string | null
+        }
+        Update: {
+          college?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          updated_at?: string
+          year?: string | null
+        }
+        Relationships: []
+      }
+      project_requests: {
+        Row: {
+          budget: string
+          college: string | null
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          project_idea: string
+          status: string
+          suggested_name: string | null
+          technologies: string
+          user_id: string
+          year: string | null
+        }
+        Insert: {
+          budget: string
+          college?: string | null
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          project_idea: string
+          status?: string
+          suggested_name?: string | null
+          technologies: string
+          user_id: string
+          year?: string | null
+        }
+        Update: {
+          budget?: string
+          college?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          project_idea?: string
+          status?: string
+          suggested_name?: string | null
+          technologies?: string
+          user_id?: string
+          year?: string | null
+        }
+        Relationships: []
+      }
+      projects: {
+        Row: {
+          best_for: string
+          created_at: string
+          dependencies: string[] | null
+          description: string
+          downloads_count: number
+          features: string[] | null
+          gallery_urls: string[] | null
+          id: string
+          is_free: boolean
+          learning_outcomes: string[] | null
+          long_description: string
+          name: string
+          price: number
+          sandbox_url: string | null
+          screenshot_url: string
+          setup_steps: string[] | null
+          technologies: string[]
+          updated_at: string
+          zip_url: string | null
+        }
+        Insert: {
+          best_for: string
+          created_at?: string
+          dependencies?: string[] | null
+          description: string
+          downloads_count?: number
+          features?: string[] | null
+          gallery_urls?: string[] | null
+          id?: string
+          is_free?: boolean
+          learning_outcomes?: string[] | null
+          long_description: string
+          name: string
+          price: number
+          sandbox_url?: string | null
+          screenshot_url: string
+          setup_steps?: string[] | null
+          technologies: string[]
+          updated_at?: string
+          zip_url?: string | null
+        }
+        Update: {
+          best_for?: string
+          created_at?: string
+          dependencies?: string[] | null
+          description?: string
+          downloads_count?: number
+          features?: string[] | null
+          gallery_urls?: string[] | null
+          id?: string
+          is_free?: boolean
+          learning_outcomes?: string[] | null
+          long_description?: string
+          name?: string
+          price?: number
+          sandbox_url?: string | null
+          screenshot_url?: string
+          setup_steps?: string[] | null
+          technologies?: string[]
+          updated_at?: string
+          zip_url?: string | null
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          amount: number
+          created_at: string
+          download_expires_at: string | null
+          download_url: string | null
+          id: string
+          payment_id: string
+          payment_status: string
+          project_id: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          download_expires_at?: string | null
+          download_url?: string | null
+          id?: string
+          payment_id: string
+          payment_status: string
+          project_id: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          download_expires_at?: string | null
+          download_url?: string | null
+          id?: string
+          payment_id?: string
+          payment_status?: string
+          project_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "user" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +361,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["user", "admin"],
+    },
   },
 } as const
