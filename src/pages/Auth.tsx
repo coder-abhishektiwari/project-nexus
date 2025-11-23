@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -6,41 +6,73 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Code2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
+import { z } from "zod";
+
+const emailSchema = z.string().trim().email("Invalid email address");
+const passwordSchema = z.string().min(6, "Password must be at least 6 characters");
+const nameSchema = z.string().trim().min(2, "Name must be at least 2 characters");
 
 const Auth = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const { user, signIn, signUp } = useAuth();
   const [loading, setLoading] = useState(false);
+
+  // Login state
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+
+  // Signup state
+  const [signupEmail, setSignupEmail] = useState("");
+  const [signupPassword, setSignupPassword] = useState("");
+  const [signupName, setSignupName] = useState("");
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    try {
+      emailSchema.parse(loginEmail);
+      passwordSchema.parse(loginPassword);
+    } catch (error: any) {
+      return;
+    }
+
     setLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      toast({
-        title: "Login Successful!",
-        description: "Welcome back to ProjectHub",
-      });
-      setLoading(false);
+    const { error } = await signIn(loginEmail, loginPassword);
+    setLoading(false);
+
+    if (!error) {
       navigate("/");
-    }, 1000);
+    }
   };
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    try {
+      nameSchema.parse(signupName);
+      emailSchema.parse(signupEmail);
+      passwordSchema.parse(signupPassword);
+    } catch (error: any) {
+      return;
+    }
+
     setLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      toast({
-        title: "Account Created!",
-        description: "Welcome to ProjectHub",
-      });
-      setLoading(false);
-      navigate("/");
-    }, 1000);
+    const { error } = await signUp(signupEmail, signupPassword, signupName);
+    setLoading(false);
+
+    if (!error) {
+      setSignupEmail("");
+      setSignupPassword("");
+      setSignupName("");
+    }
   };
 
   return (
@@ -70,28 +102,32 @@ const Auth = () => {
               <form onSubmit={handleLogin} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="login-email">Email</Label>
-                  <Input 
-                    id="login-email" 
+                  <Input
+                    id="login-email"
                     type="email"
                     placeholder="your@email.com"
                     className="glass"
+                    value={loginEmail}
+                    onChange={(e) => setLoginEmail(e.target.value)}
                     required
                   />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="login-password">Password</Label>
-                  <Input 
-                    id="login-password" 
+                  <Input
+                    id="login-password"
                     type="password"
                     placeholder="••••••••"
                     className="glass"
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
                     required
                   />
                 </div>
 
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   className="w-full glow-primary"
                   disabled={loading}
                 >
@@ -109,49 +145,44 @@ const Auth = () => {
               <form onSubmit={handleSignup} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="signup-name">Full Name</Label>
-                  <Input 
-                    id="signup-name" 
+                  <Input
+                    id="signup-name"
                     placeholder="John Doe"
                     className="glass"
+                    value={signupName}
+                    onChange={(e) => setSignupName(e.target.value)}
                     required
                   />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="signup-email">Email</Label>
-                  <Input 
-                    id="signup-email" 
+                  <Input
+                    id="signup-email"
                     type="email"
                     placeholder="your@email.com"
                     className="glass"
+                    value={signupEmail}
+                    onChange={(e) => setSignupEmail(e.target.value)}
                     required
                   />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="signup-password">Password</Label>
-                  <Input 
-                    id="signup-password" 
+                  <Input
+                    id="signup-password"
                     type="password"
                     placeholder="••••••••"
                     className="glass"
+                    value={signupPassword}
+                    onChange={(e) => setSignupPassword(e.target.value)}
                     required
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="signup-confirm">Confirm Password</Label>
-                  <Input 
-                    id="signup-confirm" 
-                    type="password"
-                    placeholder="••••••••"
-                    className="glass"
-                    required
-                  />
-                </div>
-
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   className="w-full glow-primary"
                   disabled={loading}
                 >
