@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
@@ -9,29 +10,102 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Send } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { z } from "zod";
+
+const requestSchema = z.object({
+  fullName: z.string().trim().min(2, "Name must be at least 2 characters"),
+  email: z.string().trim().email("Invalid email address"),
+  projectIdea: z.string().trim().min(10, "Project idea must be at least 10 characters"),
+  technologies: z.string().trim().min(2, "Technologies are required"),
+  budget: z.string().min(1, "Budget is required"),
+});
 
 const CustomRequest = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    projectIdea: "",
+    technologies: "",
+    suggestedName: "",
+    budget: "",
+    college: "",
+    year: "",
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to submit a custom project request",
+        variant: "destructive",
+      });
+      navigate("/auth");
+      return;
+    }
+
+    try {
+      requestSchema.parse(formData);
+    } catch (error: any) {
+      toast({
+        title: "Validation error",
+        description: error.errors[0].message,
+        variant: "destructive",
+      });
+      return;
+    }
+
     setLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
+    const { error } = await supabase.from("project_requests").insert({
+      user_id: user.id,
+      full_name: formData.fullName,
+      email: formData.email,
+      project_idea: formData.projectIdea,
+      technologies: formData.technologies,
+      suggested_name: formData.suggestedName || null,
+      budget: formData.budget,
+      college: formData.college || null,
+      year: formData.year || null,
+    });
+
+    setLoading(false);
+
+    if (error) {
+      toast({
+        title: "Submission failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
       toast({
         title: "Request Submitted!",
         description: "We'll get back to you within 24 hours.",
       });
-      setLoading(false);
-    }, 1000);
+      setFormData({
+        fullName: "",
+        email: "",
+        projectIdea: "",
+        technologies: "",
+        suggestedName: "",
+        budget: "",
+        college: "",
+        year: "",
+      });
+    }
   };
 
   return (
     <div className="min-h-screen">
       <Navbar />
-      
+
       <main className="container mx-auto px-4 pt-24 pb-16">
         <div className="max-w-3xl mx-auto animate-fade-in">
           {/* Header */}
@@ -50,10 +124,12 @@ const CustomRequest = () => {
               {/* Full Name */}
               <div className="space-y-2">
                 <Label htmlFor="fullName">Full Name *</Label>
-                <Input 
-                  id="fullName" 
+                <Input
+                  id="fullName"
                   placeholder="John Doe"
                   className="glass"
+                  value={formData.fullName}
+                  onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                   required
                 />
               </div>
@@ -61,11 +137,13 @@ const CustomRequest = () => {
               {/* Email */}
               <div className="space-y-2">
                 <Label htmlFor="email">Email Address *</Label>
-                <Input 
-                  id="email" 
+                <Input
+                  id="email"
                   type="email"
                   placeholder="john@example.com"
                   className="glass"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
                 />
               </div>
@@ -73,10 +151,12 @@ const CustomRequest = () => {
               {/* Project Idea */}
               <div className="space-y-2">
                 <Label htmlFor="projectIdea">Project Idea *</Label>
-                <Textarea 
-                  id="projectIdea" 
+                <Textarea
+                  id="projectIdea"
                   placeholder="Describe your project idea in detail..."
                   className="glass min-h-[120px]"
+                  value={formData.projectIdea}
+                  onChange={(e) => setFormData({ ...formData, projectIdea: e.target.value })}
                   required
                 />
               </div>
@@ -84,10 +164,12 @@ const CustomRequest = () => {
               {/* Technologies */}
               <div className="space-y-2">
                 <Label htmlFor="technologies">Required Technologies *</Label>
-                <Input 
-                  id="technologies" 
+                <Input
+                  id="technologies"
                   placeholder="e.g., React, Node.js, MongoDB"
                   className="glass"
+                  value={formData.technologies}
+                  onChange={(e) => setFormData({ ...formData, technologies: e.target.value })}
                   required
                 />
               </div>
@@ -95,17 +177,23 @@ const CustomRequest = () => {
               {/* Project Name */}
               <div className="space-y-2">
                 <Label htmlFor="projectName">Suggested Project Name (Optional)</Label>
-                <Input 
-                  id="projectName" 
+                <Input
+                  id="projectName"
                   placeholder="My Awesome Project"
                   className="glass"
+                  value={formData.suggestedName}
+                  onChange={(e) => setFormData({ ...formData, suggestedName: e.target.value })}
                 />
               </div>
 
               {/* Budget */}
               <div className="space-y-2">
                 <Label htmlFor="budget">Budget Range *</Label>
-                <Select required>
+                <Select 
+                  value={formData.budget}
+                  onValueChange={(value) => setFormData({ ...formData, budget: value })}
+                  required
+                >
                   <SelectTrigger className="glass">
                     <SelectValue placeholder="Select your budget" />
                   </SelectTrigger>
@@ -122,16 +210,21 @@ const CustomRequest = () => {
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="college">College/University</Label>
-                  <Input 
-                    id="college" 
+                  <Input
+                    id="college"
                     placeholder="Your institution"
                     className="glass"
+                    value={formData.college}
+                    onChange={(e) => setFormData({ ...formData, college: e.target.value })}
                   />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="year">Current Year</Label>
-                  <Select>
+                  <Select
+                    value={formData.year}
+                    onValueChange={(value) => setFormData({ ...formData, year: value })}
+                  >
                     <SelectTrigger className="glass">
                       <SelectValue placeholder="Select year" />
                     </SelectTrigger>
@@ -147,9 +240,9 @@ const CustomRequest = () => {
               </div>
 
               {/* Submit Button */}
-              <Button 
-                type="submit" 
-                size="lg" 
+              <Button
+                type="submit"
+                size="lg"
                 className="w-full glow-primary"
                 disabled={loading}
               >
