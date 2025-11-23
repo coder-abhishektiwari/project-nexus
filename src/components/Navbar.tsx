@@ -1,13 +1,30 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Code2, Menu, X } from "lucide-react";
+import { Code2, Menu, X, Shield } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
+
+  const { data: isAdmin } = useQuery({
+    queryKey: ['is-admin', user?.id],
+    queryFn: async () => {
+      if (!user) return false;
+      const { data } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('role', 'admin')
+        .maybeSingle();
+      return !!data;
+    },
+    enabled: !!user,
+  });
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50">
@@ -32,6 +49,12 @@ const Navbar = () => {
             <Link to="/request" className="text-foreground/80 hover:text-foreground transition-colors">
               Custom Request
             </Link>
+            {isAdmin && (
+              <Link to="/admin" className="text-foreground/80 hover:text-foreground transition-colors flex items-center gap-1">
+                <Shield className="h-4 w-4" />
+                Admin
+              </Link>
+            )}
           </div>
 
           {/* Auth Buttons */}
@@ -92,6 +115,16 @@ const Navbar = () => {
               >
                 Custom Request
               </Link>
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  className="text-foreground/80 hover:text-foreground transition-colors py-2 flex items-center gap-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <Shield className="h-4 w-4" />
+                  Admin
+                </Link>
+              )}
               <div className="flex flex-col gap-2 pt-4 border-t border-border">
                 {user ? (
                   <Button
