@@ -35,7 +35,7 @@ const Navbar = () => {
             <div className="p-2 rounded-lg bg-gradient-to-br from-primary to-secondary">
               <Code2 className="h-6 w-6 text-primary-foreground" />
             </div>
-            <span className="font-bold text-xl gradient-text">ProjectHub</span>
+            <span className="font-bold text-xl gradient-text">Project Nexus</span>
           </Link>
 
           {/* Desktop Navigation */}
