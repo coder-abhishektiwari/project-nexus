@@ -12,7 +12,7 @@ const Footer = () => {
               <div className="p-2 rounded-lg bg-gradient-to-br from-primary to-secondary">
                 <Code2 className="h-6 w-6 text-primary-foreground" />
               </div>
-              <span className="font-bold text-xl gradient-text">ProjectHub</span>
+              <span className="font-bold text-xl gradient-text">Project Nexus</span>
             </div>
             <p className="text-muted-foreground max-w-md">
               Your one-stop destination for high-quality academic projects. 
@@ -39,6 +39,21 @@ const Footer = () => {
                   Custom Request
                 </Link>
               </li>
+              <li>
+                <Link to="/contact" className="text-muted-foreground hover:text-primary transition-colors">
+                  Contact Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/terms" className="text-muted-foreground hover:text-primary transition-colors">
+                  Terms & Conditions
+                </Link>
+              </li>
+              <li>
+                <Link to="/refund-policy" className="text-muted-foreground hover:text-primary transition-colors">
+                  Refund Policy
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -60,7 +75,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-border/50 mt-8 pt-8 text-center text-muted-foreground text-sm">
-          <p>&copy; 2024 ProjectHub. All rights reserved.</p>
+          <p>&copy; 2024 Project Nexus. All rights reserved.</p>
         </div>
       </div>
     </footer>
