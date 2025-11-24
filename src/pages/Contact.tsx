@@ -29,8 +29,8 @@ const Contact = () => {
                   <CardDescription>Send us an email anytime</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <a href="mailto:contact@projectnexus.com" className="text-primary hover:underline">
-                    contact@projectnexus.com
+                  <a href="mailto:abhishektiwari1706@gmail.com" className="text-primary hover:underline">
+                    abhishektiwari1706@gmail.com
                   </a>
                 </CardContent>
               </Card>
@@ -44,8 +44,8 @@ const Contact = () => {
                   <CardDescription>Call us during business hours</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <a href="tel:+911234567890" className="text-primary hover:underline">
-                    +91 123 456 7890
+                  <a href="tel:+918295599549" className="text-primary hover:underline">
+                    +91 829 559 9649
                   </a>
                 </CardContent>
               </Card>
@@ -76,8 +76,8 @@ const Contact = () => {
               <CardContent>
                 <div className="space-y-2">
                   <p><strong>Legal Business Name:</strong> Project Nexus</p>
-                  <p><strong>Email:</strong> contact@projectnexus.com</p>
-                  <p><strong>Phone:</strong> +91 123 456 7890</p>
+                  <p><strong>Email:</strong> abhishektiwari1706@gmail.com</p>
+                  <p><strong>Phone:</strong> +91 829 559 9649</p>
                   <p><strong>Business Hours:</strong> Monday - Friday, 9:00 AM - 6:00 PM IST</p>
                 </div>
               </CardContent>

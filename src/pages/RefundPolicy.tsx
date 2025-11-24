@@ -175,9 +175,9 @@ const RefundPolicy = () => {
                 <p>
                   For all refund and cancellation queries:
                   <br />
-                  <strong>Email:</strong> contact@projectnexus.com
+                  <strong>Email:</strong> abhishektiwari1706@gmail.com
                   <br />
-                  <strong>Phone:</strong> +91 123 456 7890
+                  <strong>Phone:</strong> +91 829 559 9649
                   <br />
                   <strong>Business Hours:</strong> Monday - Friday, 9:00 AM - 6:00 PM IST
                 </p>

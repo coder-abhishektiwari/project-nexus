@@ -142,9 +142,9 @@ const Terms = () => {
                 <p>
                   For questions about these Terms and Conditions, please contact us at:
                   <br />
-                  <strong>Email:</strong> contact@projectnexus.com
+                  <strong>Email:</strong> abhishektiwari1706@gmail.com
                   <br />
-                  <strong>Phone:</strong> +91 123 456 7890
+                  <strong>Phone:</strong> +91 829 559 9649
                 </p>
               </CardContent>
             </Card>
