@@ -11,6 +11,7 @@ import ProjectDetails from "./pages/ProjectDetails";
 import CustomRequest from "./pages/CustomRequest";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
+import AdminLogin from "./pages/AdminLogin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -41,6 +42,7 @@ const App = () => (
               </AdminRoute>
             }
           />
+          <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/auth" element={<Auth />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

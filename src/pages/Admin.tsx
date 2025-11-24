@@ -5,7 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ProjectsManager from '@/components/admin/ProjectsManager';
 import RequestsViewer from '@/components/admin/RequestsViewer';
 import TransactionsViewer from '@/components/admin/TransactionsViewer';
-import { LayoutDashboard, Package, FileText, CreditCard } from 'lucide-react';
+import { LayoutDashboard, Package, FileText, CreditCard, Users } from 'lucide-react';
+import UserManagement from '@/components/admin/UserManagement';
 
 const Admin = () => {
   return (
@@ -22,7 +23,7 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="projects" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8">
+          <TabsList className="grid w-full grid-cols-4 mb-8">
             <TabsTrigger value="projects" className="flex items-center gap-2">
               <Package className="h-4 w-4" />
               Projects
@@ -34,6 +35,10 @@ const Admin = () => {
             <TabsTrigger value="transactions" className="flex items-center gap-2">
               <CreditCard className="h-4 w-4" />
               Transactions
+            </TabsTrigger>
+            <TabsTrigger value="users" className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              Users
             </TabsTrigger>
           </TabsList>
 
@@ -47,6 +52,10 @@ const Admin = () => {
 
           <TabsContent value="transactions">
             <TransactionsViewer />
+          </TabsContent>
+
+          <TabsContent value="users">
+            <UserManagement />
           </TabsContent>
         </Tabs>
       </main>
