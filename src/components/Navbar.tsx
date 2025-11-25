@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import logo from "../images/logo.png";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -32,9 +33,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 hover-scale">
-            <div className="p-2 rounded-lg bg-gradient-to-br from-primary to-secondary">
-              <Code2 className="h-6 w-6 text-primary-foreground" />
-            </div>
+            <img src={logo} alt="logo" className="h-12 w-12" />
             <span className="font-bold text-xl gradient-text">Project Nexus</span>
           </Link>
 
@@ -48,6 +47,15 @@ const Navbar = () => {
             </Link>
             <Link to="/request" className="text-foreground/80 hover:text-foreground transition-colors">
               Custom Request
+            </Link>
+            <Link to="/terms" className="text-foreground/80 hover:text-foreground transition-colors">
+              Terms & Conditions
+            </Link>
+            <Link to="/refund-policy" className="text-foreground/80 hover:text-foreground transition-colors">
+              Refund Policy
+            </Link>
+            <Link to="/contact" className="text-foreground/80 hover:text-foreground transition-colors">
+              Contact Us
             </Link>
             {isAdmin && (
               <Link to="/admin" className="text-foreground/80 hover:text-foreground transition-colors flex items-center gap-1">

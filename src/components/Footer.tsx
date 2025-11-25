@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Code2, Mail, Github, Linkedin } from "lucide-react";
+import  logo  from "../images/logo.png";
 
 const Footer = () => {
   return (
@@ -9,9 +10,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <div className="p-2 rounded-lg bg-gradient-to-br from-primary to-secondary">
-                <Code2 className="h-6 w-6 text-primary-foreground" />
-              </div>
+              <img src={logo} alt="logo" className="h-12 w-12"/>
               <span className="font-bold text-xl gradient-text">Project Nexus</span>
             </div>
             <p className="text-muted-foreground max-w-md">
@@ -61,7 +60,7 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4">Connect</h3>
             <div className="flex gap-4">
-              <a href="mailto:contact@projecthub.com" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="mailto:abhishektiwari1706@gmail.com" className="text-muted-foreground hover:text-primary transition-colors">
                 <Mail className="h-5 w-5" />
               </a>
               <a href="https://github.com" className="text-muted-foreground hover:text-primary transition-colors">
