@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import ProjectCard from "@/components/ProjectCard";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const CATEGORIES = [
   { label: "All Projects", value: "all" },
@@ -77,9 +78,14 @@ const CATEGORIES = [
 //   },
 // ];
 
-const { data: projects } = await supabase
-  .from("projects")
-  .select("*");
+const { data: projects = [] } = useQuery({
+  queryKey: ["projects"],
+  queryFn: async () => {
+    const { data, error } = await supabase.from("projects").select("*");
+    if (error) throw error;
+    return data;
+  }
+});
 
 
 const Projects = () => {
