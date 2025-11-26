@@ -78,14 +78,6 @@ const CATEGORIES = [
 //   },
 // ];
 
-const { data: projects = [] } = useQuery({
-  queryKey: ["projects"],
-  queryFn: async () => {
-    const { data, error } = await supabase.from("projects").select("*");
-    if (error) throw error;
-    return data;
-  }
-});
 
 
 const Projects = () => {
