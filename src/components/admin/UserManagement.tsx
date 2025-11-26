@@ -44,7 +44,7 @@ const UserManagement = () => {
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(['admin-users']);
+      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
       toast({ title: "User deleted successfully" });
     },
     onError: (err) => {
