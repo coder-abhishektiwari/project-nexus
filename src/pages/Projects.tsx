@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProjectCard from "@/components/ProjectCard";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 
 const CATEGORIES = [
   { label: "All Projects", value: "all" },
@@ -13,78 +14,111 @@ const CATEGORIES = [
 ];
 
 // Mock data - will be replaced with API
-const MOCK_PROJECTS = [
-  {
-    id: "1",
-    name: "E-Commerce Website",
-    description: "Full-stack e-commerce platform with payment integration, admin panel, and user authentication.",
-    price: 799,
-    isFree: false,
-    technologies: ["React", "Node.js", "MongoDB", "Stripe"],
-    screenshot: "https://images.unsplash.com/photo-1557821552-17105176677c?w=800&h=450&fit=crop",
-    bestFor: "BTech 3rd Year, BCA Final Year"
-  },
-  {
-    id: "2",
-    name: "Portfolio Website",
-    description: "Modern, responsive portfolio template with dark mode and smooth animations.",
-    price: 0,
-    isFree: true,
-    technologies: ["React", "TailwindCSS", "Framer Motion"],
-    screenshot: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=450&fit=crop",
-    bestFor: "All Students"
-  },
-  {
-    id: "3",
-    name: "Social Media Dashboard",
-    description: "Analytics dashboard with real-time data visualization and user management.",
-    price: 1299,
-    isFree: false,
-    technologies: ["React", "TypeScript", "D3.js", "Firebase"],
-    screenshot: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=450&fit=crop",
-    bestFor: "BTech 4th Year, MCA"
-  },
-  {
-    id: "4",
-    name: "Chat Application",
-    description: "Real-time messaging app with group chats, file sharing, and notifications.",
-    price: 599,
-    isFree: false,
-    technologies: ["React", "Socket.io", "Express", "PostgreSQL"],
-    screenshot: "https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=800&h=450&fit=crop",
-    bestFor: "BTech 2nd Year, BCA 2nd Year"
-  },
-  {
-    id: "5",
-    name: "Task Manager",
-    description: "Kanban-style task management system with drag-and-drop functionality.",
-    price: 0,
-    isFree: true,
-    technologies: ["React", "Redux", "DnD Kit"],
-    screenshot: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=800&h=450&fit=crop",
-    bestFor: "BTech 1st Year, Diploma"
-  },
-  {
-    id: "6",
-    name: "Booking System",
-    description: "Complete hotel/service booking platform with calendar integration and payment gateway.",
-    price: 1499,
-    isFree: false,
-    technologies: ["Next.js", "Prisma", "PostgreSQL", "Razorpay"],
-    screenshot: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=450&fit=crop",
-    bestFor: "BTech Final Year"
-  },
-];
+// const MOCK_PROJECTS = [
+//   {
+//     id: "1",
+//     name: "E-Commerce Website",
+//     description: "Full-stack e-commerce platform with payment integration, admin panel, and user authentication.",
+//     price: 799,
+//     isFree: false,
+//     technologies: ["React", "Node.js", "MongoDB", "Stripe"],
+//     screenshot: "https://images.unsplash.com/photo-1557821552-17105176677c?w=800&h=450&fit=crop",
+//     bestFor: "BTech 3rd Year, BCA Final Year"
+//   },
+//   {
+//     id: "2",
+//     name: "Portfolio Website",
+//     description: "Modern, responsive portfolio template with dark mode and smooth animations.",
+//     price: 0,
+//     isFree: true,
+//     technologies: ["React", "TailwindCSS", "Framer Motion"],
+//     screenshot: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=450&fit=crop",
+//     bestFor: "All Students"
+//   },
+//   {
+//     id: "3",
+//     name: "Social Media Dashboard",
+//     description: "Analytics dashboard with real-time data visualization and user management.",
+//     price: 1299,
+//     isFree: false,
+//     technologies: ["React", "TypeScript", "D3.js", "Firebase"],
+//     screenshot: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=450&fit=crop",
+//     bestFor: "BTech 4th Year, MCA"
+//   },
+//   {
+//     id: "4",
+//     name: "Chat Application",
+//     description: "Real-time messaging app with group chats, file sharing, and notifications.",
+//     price: 599,
+//     isFree: false,
+//     technologies: ["React", "Socket.io", "Express", "PostgreSQL"],
+//     screenshot: "https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=800&h=450&fit=crop",
+//     bestFor: "BTech 2nd Year, BCA 2nd Year"
+//   },
+//   {
+//     id: "5",
+//     name: "Task Manager",
+//     description: "Kanban-style task management system with drag-and-drop functionality.",
+//     price: 0,
+//     isFree: true,
+//     technologies: ["React", "Redux", "DnD Kit"],
+//     screenshot: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=800&h=450&fit=crop",
+//     bestFor: "BTech 1st Year, Diploma"
+//   },
+//   {
+//     id: "6",
+//     name: "Booking System",
+//     description: "Complete hotel/service booking platform with calendar integration and payment gateway.",
+//     price: 1499,
+//     isFree: false,
+//     technologies: ["Next.js", "Prisma", "PostgreSQL", "Razorpay"],
+//     screenshot: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=450&fit=crop",
+//     bestFor: "BTech Final Year"
+//   },
+// ];
+
+const { data: projects } = await supabase
+  .from("projects")
+  .select("*");
+
 
 const Projects = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredProjects = MOCK_PROJECTS.filter(project => {
+  // Fetch from DB
+  useEffect(() => {
+    const loadProjects = async () => {
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*");
+
+      if (error) {
+        console.error("Error loading projects:", error);
+      } else {
+        setProjects(data || []);
+      }
+
+      setLoading(false);
+    };
+
+    loadProjects();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin h-10 w-10 rounded-full border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+  const filteredProjects = projects.filter(project => {
     if (selectedCategory === "all") return true;
-    if (selectedCategory === "free") return project.isFree;
-    
+    if (selectedCategory === "free") return project.price === 0;
+
     const [min, max] = selectedCategory.split("-").map(Number);
-    return !project.isFree && project.price >= min && project.price <= max;
+    return project.price >= min && project.price <= max;
   });
 
   return (
@@ -109,7 +143,6 @@ const Projects = () => {
               key={category.value}
               variant={selectedCategory === category.value ? "default" : "outline"}
               onClick={() => setSelectedCategory(category.value)}
-              className={selectedCategory === category.value ? "glow-primary" : "glass"}
             >
               {category.label}
             </Button>

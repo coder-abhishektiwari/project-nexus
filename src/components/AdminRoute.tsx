@@ -10,7 +10,7 @@ export const AdminRoute = ({ children }: { children: React.ReactNode }) => {
     queryKey: ['admin-check', user?.id],
     queryFn: async () => {
       if (!user) return false;
-      
+
       const { data, error } = await supabase
         .from('user_roles')
         .select('role')

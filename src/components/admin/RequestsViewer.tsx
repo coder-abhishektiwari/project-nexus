@@ -17,9 +17,10 @@ const RequestsViewer = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('project_requests')
-        .select('*, profiles(full_name, email)')
+        .select('*')
         .order('created_at', { ascending: false });
-      
+
+
       if (error) throw error;
       return data;
     }
@@ -31,7 +32,7 @@ const RequestsViewer = () => {
         .from('project_requests')
         .update({ status })
         .eq('id', id);
-      
+
       if (error) throw error;
     },
     onSuccess: () => {
