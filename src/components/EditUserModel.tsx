@@ -32,7 +32,7 @@ const EditUserModal = ({ open, setOpen, user }: any) => {
     },
     onSuccess: () => {
       toast({ title: "User updated successfully" });
-      queryClient.invalidateQueries(["admin-users"]);
+      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
       setOpen(false);
     },
     onError: (err) => {
