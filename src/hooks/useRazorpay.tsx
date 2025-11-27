@@ -57,11 +57,14 @@ export const useRazorpay = () => {
         throw new Error('Please sign in to continue');
       }
 
-      // Create order
+      // STEP 1 — Create Razorpay Order
       const { data: orderData, error: orderError } = await supabase.functions.invoke(
         'create-razorpay-order',
         {
-          body: { projectId, amount },
+          body: {
+            projectId,
+            amount
+          }
         }
       );
 
@@ -69,13 +72,14 @@ export const useRazorpay = () => {
         throw orderError;
       }
 
-      // Get user profile
-      const { data: profile } = await supabase
+      // Get user profile data
+      const { data: profileData } = await supabase
         .from('profiles')
         .select('full_name, email')
         .eq('id', session.user.id)
         .single();
 
+      // Step 2 — Razorpay Options
       const options = {
         key: orderData.keyId,
         amount: orderData.amount,
@@ -84,27 +88,30 @@ export const useRazorpay = () => {
         description: projectName,
         order_id: orderData.orderId,
         prefill: {
-          name: profile?.full_name || '',
-          email: profile?.email || session.user.email || '',
+          name: profileData?.full_name || "",
+          email: profileData?.email || session.user.email
         },
-        theme: {
-          color: '#3b82f6',
-        },
+        theme: { color: '#3b82f6' },
+
+        // STEP 3 — Payment handler
         handler: async (response: any) => {
           try {
-            // Verify payment
-            const { data: verifyData, error: verifyError } = await supabase.functions.invoke(
-              'verify-razorpay-payment',
-              {
-                body: {
-                  razorpayOrderId: response.razorpay_order_id,
-                  razorpayPaymentId: response.razorpay_payment_id,
-                  razorpaySignature: response.razorpay_signature,
-                  projectId,
-                  amount,
-                },
-              }
-            );
+            const { data: verifyData, error: verifyError } =
+              await supabase.functions.invoke(
+                'verify-razorpay-payment',
+                {
+                  body: {
+                    razorpayOrderId: response.razorpay_order_id,
+                    razorpayPaymentId: response.razorpay_payment_id,
+                    razorpaySignature: response.razorpay_signature,
+                    projectId,
+                    amount,
+                  },
+                  headers: {
+                    Authorization: `Bearer ${session.access_token}`
+                  }
+                }
+              );
 
             if (verifyError) {
               throw verifyError;
@@ -116,39 +123,37 @@ export const useRazorpay = () => {
             });
 
             onSuccess(verifyData.transaction);
-          } catch (error: any) {
-            console.error('Payment verification failed:', error);
+
+          } catch (err: any) {
             toast({
-              title: 'Payment Verification Failed',
-              description: error.message,
+              title: 'Verification Failed',
+              description: err.message,
               variant: 'destructive',
             });
-            if (onError) onError(error);
+            onError?.(err);
           }
-        },
-        modal: {
-          ondismiss: () => {
-            setLoading(false);
-          },
-        },
+        }
       };
 
+      // Open Razorpay Checkout
       const razorpay = new window.Razorpay(options);
       razorpay.open();
-    } catch (error: any) {
-      console.error('Payment initiation failed:', error);
+
+    } catch (err: any) {
+      console.error("Payment initiation failed:", err);
+
       toast({
         title: 'Payment Failed',
-        description: error.message,
+        description: err.message,
         variant: 'destructive',
       });
-      if (onError) onError(error);
+
+      onError?.(err);
+
+    } finally {
       setLoading(false);
     }
   };
 
-  return {
-    initiatePayment,
-    loading,
-  };
+  return { initiatePayment, loading };
 };
