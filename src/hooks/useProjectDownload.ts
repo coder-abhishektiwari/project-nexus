@@ -21,24 +21,36 @@ export function useProjectDownload(project: any) {
         .eq("user_id", user.id)
         .eq("project_id", project.id)
         .eq("payment_status", "completed")
-        .single();
+        .maybeSingle();
 
       setHasPurchased(!!data);
     };
 
     check();
-  }, [user, project]);
+  }, [user, project?.id]);
 
-  const handleDownload = () => {
+
+  const handleDownload = async () => {
+    if (!project) return;
+    let fileUrl = project.zip_url;
+
+    if (!fileUrl && project.project_file_path) {
+      const { data } = supabase.storage
+        .from("project-files")
+        .getPublicUrl(project.project_file_path);
+
+      fileUrl = data.publicUrl;
+    }
+
+    // Free or purchased → Direct download
     if (project.is_free || hasPurchased) {
-      if (project.zip_url) {
-        window.open(project.zip_url, "_blank");
+      if (fileUrl) {
+        window.open(fileUrl, "_blank");
       } else {
         toast({ title: "No Download Link!", variant: "destructive" });
       }
       return;
     }
-
     if (!user) {
       toast({ title: "Login Required", description: "Please login to buy." });
       return "login";
@@ -48,9 +60,24 @@ export function useProjectDownload(project: any) {
       projectId: project.id,
       projectName: project.name,
       amount: project.price,
-      onSuccess: () => {
+
+      // On success → DB entry inserted → mark as purchased
+      onSuccess: async () => {
+        // recheck from DB also (delay fix)
+        const { data } = await supabase
+          .from("transactions")
+          .select("*")
+          .eq("user_id", user.id)
+          .eq("project_id", project.id)
+          .eq("payment_status", "completed")
+          .maybeSingle();
+
         setHasPurchased(true);
-        toast({ title: "Purchase Successful!", description: "Download unlocked!" });
+
+        toast({
+          title: "Purchase Successful!",
+          description: "Download unlocked!",
+        });
       },
     });
   };
