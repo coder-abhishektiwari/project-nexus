@@ -12,9 +12,8 @@ export function useProjectDownload(project: any) {
 
   // check purchase
   useEffect(() => {
-    const check = async () => {
-      if (!user || !project) return;
-
+    if (!user || !project?.id) return;
+    const checkPurchase = async () => {
       const { data } = await supabase
         .from("transactions")
         .select("*")
@@ -22,11 +21,10 @@ export function useProjectDownload(project: any) {
         .eq("project_id", project.id)
         .eq("payment_status", "completed")
         .maybeSingle();
-
       setHasPurchased(!!data);
     };
 
-    check();
+    checkPurchase();
   }, [user, project?.id]);
 
 
@@ -72,7 +70,7 @@ export function useProjectDownload(project: any) {
           .eq("payment_status", "completed")
           .maybeSingle();
 
-        setHasPurchased(true);
+        if (data) setHasPurchased(true);
 
         toast({
           title: "Purchase Successful!",
