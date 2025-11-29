@@ -1,10 +1,10 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Code2, Menu, X, Shield } from "lucide-react";
-import { useState } from "react";
+import { Menu, X, Code2, LogOut, Shield } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
 import logo from "../images/logo.png";
 
 const Navbar = () => {
@@ -13,52 +13,52 @@ const Navbar = () => {
   const { user, signOut } = useAuth();
 
   const { data: isAdmin } = useQuery({
-    queryKey: ['is-admin', user?.id],
+    queryKey: ["is-admin", user?.id],
     queryFn: async () => {
       if (!user) return false;
       const { data } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user.id)
-        .eq('role', 'admin')
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id)
+        .eq("role", "admin")
         .maybeSingle();
       return !!data;
     },
     enabled: !!user,
   });
 
+  const handleLogout = async () => {
+    await signOut();
+    setMobileMenuOpen(false);
+    navigate("/");
+  };
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50">
+    <nav className="fixed top-0 w-full z-50 glass border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 hover-scale">
-            <img src={logo} alt="logo" className="h-12 w-12" />
-            <span className="font-bold text-xl gradient-text">Project Nexus</span>
+            <img src={logo} alt="Project Nexus" className="h-10 w-10" />
+            <span className="font-bold text-xl">Project Nexus</span>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
-            <Link to="/" className="text-foreground/80 hover:text-foreground transition-colors">
+            <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">
               Home
             </Link>
-            <Link to="/projects" className="text-foreground/80 hover:text-foreground transition-colors">
+            <Link to="/projects" className="text-sm font-medium hover:text-primary transition-colors">
               Projects
             </Link>
-            <Link to="/request" className="text-foreground/80 hover:text-foreground transition-colors">
+            <Link to="/request" className="text-sm font-medium hover:text-primary transition-colors">
               Custom Request
             </Link>
-            <Link to="/terms" className="text-foreground/80 hover:text-foreground transition-colors">
-              Terms & Conditions
-            </Link>
-            <Link to="/refund-policy" className="text-foreground/80 hover:text-foreground transition-colors">
-              Refund Policy
-            </Link>
-            <Link to="/contact" className="text-foreground/80 hover:text-foreground transition-colors">
-              Contact Us
+            <Link to="/contact" className="text-sm font-medium hover:text-primary transition-colors">
+              Contact
             </Link>
             {isAdmin && (
-              <Link to="/admin" className="text-foreground/80 hover:text-foreground transition-colors flex items-center gap-1">
+              <Link to="/admin" className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
                 <Shield className="h-4 w-4" />
                 Admin
               </Link>
@@ -68,24 +68,16 @@ const Navbar = () => {
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center gap-3">
             {user ? (
-              <Button
-                variant="ghost"
-                onClick={async () => {
-                  await signOut();
-                  navigate("/");
-                }}
-              >
+              <Button variant="outline" size="sm" onClick={handleLogout} className="glass">
+                <LogOut className="mr-2 h-4 w-4" />
                 Logout
               </Button>
             ) : (
-              <>
-                <Link to="/auth">
-                  <Button variant="ghost">Login</Button>
-                </Link>
-                <Link to="/auth">
-                  <Button className="glow-primary">Get Started</Button>
-                </Link>
-              </>
+              <Link to="/auth">
+                <Button size="sm" className="shadow-subtle">
+                  Login
+                </Button>
+              </Link>
             )}
           </div>
 
@@ -97,70 +89,67 @@ const Navbar = () => {
             {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
+      </div>
 
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden py-4 animate-fade-in">
-            <div className="flex flex-col gap-4">
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-t border-border glass">
+          <div className="container mx-auto px-4 py-4 space-y-3">
+            <Link
+              to="/"
+              className="block py-2 text-sm font-medium hover:text-primary transition-colors"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Home
+            </Link>
+            <Link
+              to="/projects"
+              className="block py-2 text-sm font-medium hover:text-primary transition-colors"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Projects
+            </Link>
+            <Link
+              to="/request"
+              className="block py-2 text-sm font-medium hover:text-primary transition-colors"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Custom Request
+            </Link>
+            <Link
+              to="/contact"
+              className="block py-2 text-sm font-medium hover:text-primary transition-colors"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Contact
+            </Link>
+            {isAdmin && (
               <Link
-                to="/"
-                className="text-foreground/80 hover:text-foreground transition-colors py-2"
+                to="/admin"
+                className="block py-2 text-sm font-medium hover:text-primary transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Home
+                <Shield className="h-4 w-4 inline mr-2" />
+                Admin
               </Link>
-              <Link
-                to="/projects"
-                className="text-foreground/80 hover:text-foreground transition-colors py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Projects
-              </Link>
-              <Link
-                to="/request"
-                className="text-foreground/80 hover:text-foreground transition-colors py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Custom Request
-              </Link>
-              {isAdmin && (
-                <Link
-                  to="/admin"
-                  className="text-foreground/80 hover:text-foreground transition-colors py-2 flex items-center gap-2"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <Shield className="h-4 w-4" />
-                  Admin
+            )}
+            <div className="pt-3 border-t border-border">
+              {user ? (
+                <Button variant="outline" size="sm" onClick={handleLogout} className="w-full glass">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Logout
+                </Button>
+              ) : (
+                <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>
+                  <Button size="sm" className="w-full">
+                    Login
+                  </Button>
                 </Link>
               )}
-              <div className="flex flex-col gap-2 pt-4 border-t border-border">
-                {user ? (
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-start"
-                    onClick={async () => {
-                      await signOut();
-                      navigate("/");
-                      setMobileMenuOpen(false);
-                    }}
-                  >
-                    Logout
-                  </Button>
-                ) : (
-                  <>
-                    <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>
-                      <Button variant="ghost" className="w-full">Login</Button>
-                    </Link>
-                    <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>
-                      <Button className="w-full glow-primary">Get Started</Button>
-                    </Link>
-                  </>
-                )}
-              </div>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </nav>
   );
 };
