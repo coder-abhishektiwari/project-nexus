@@ -127,7 +127,7 @@ const Projects = () => {
         {/* Header */}
         <div className="text-center mb-12 animate-fade-in">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Explore <span className="gradient-text">Projects</span>
+            Explore <span className="gradient-text">Amazing Projects</span>
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Choose from our curated collection of production-ready projects designed for students.
@@ -141,7 +141,6 @@ const Projects = () => {
               key={category.value}
               variant={selectedCategory === category.value ? "default" : "outline"}
               onClick={() => setSelectedCategory(category.value)}
-              className={selectedCategory === category.value ? "shadow-medium" : "glass"}
             >
               {category.label}
             </Button>

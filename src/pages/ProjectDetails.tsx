@@ -59,7 +59,7 @@ const ProjectDetails = () => {
     <div className="min-h-screen">
       <Navbar />
 
-      <main className="w-full px-6 md:px-20 pt-24 pb-16">
+      <main className="w-full px-20 pt-24 pb-16">
         {/* Hero Section */}
         <div className="grid md:grid-cols-2 gap-8 mb-16 animate-fade-in">
           <div>
@@ -75,7 +75,7 @@ const ProjectDetails = () => {
                 Production Ready
               </Badge>
               {hasPurchased && (
-                <Badge className="bg-accent/20 text-accent">
+                <Badge className="bg-green-500/20 text-green-500">
                   Purchased
                 </Badge>
               )}
@@ -95,7 +95,7 @@ const ProjectDetails = () => {
               ))}
             </div>
             <div className="flex gap-3">
-              <Button size="lg" className="flex-1 shadow-medium" onClick={handleDownload} disabled={paymentLoading} >
+              <Button size="lg" className="glow-primary flex-1" onClick={handleDownload} disabled={paymentLoading} >
                 {paymentLoading ? (
                   <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                 ) : (
@@ -114,7 +114,7 @@ const ProjectDetails = () => {
             </div>
           </div>
 
-          <div className="glass rounded-2xl overflow-hidden border border-border shadow-medium">
+          <div className="glass rounded-2xl overflow-hidden border border-border/50">
             <img src={project.screenshot_url} className="w-full h-full object-cover" />
           </div>
         </div>
@@ -156,9 +156,9 @@ const ProjectDetails = () => {
           <div className="md:col-span-2 space-y-8">
 
             {/* About */}
-            <Card className="glass border-border p-6 shadow-subtle">
+            <Card className="glass border-border/50 p-6">
               <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                <Layers className="h-6 w-6" />
+                <Layers className="h-6 w-6 text-primary" />
                 About This Project
               </h2>
               <p className="text-muted-foreground leading-relaxed">
@@ -167,16 +167,16 @@ const ProjectDetails = () => {
             </Card>
 
             {/* Features */}
-            <Card className="glass border-border p-6 shadow-subtle">
+            <Card className="glass border-border/50 p-6">
               <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                <Sparkles className="h-6 w-6" />
+                <Sparkles className="h-6 w-6 text-accent" />
                 Key Features
               </h2>
 
               <ul className="grid md:grid-cols-2 gap-3">
                 {project.features?.map((feature: string, idx: number) => (
                   <li key={idx} className="flex items-start gap-2">
-                    <Check className="h-5 w-5 mt-0.5 flex-shrink-0" />
+                    <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                     <span>{feature}</span>
                   </li>
                 ))}
@@ -184,16 +184,16 @@ const ProjectDetails = () => {
             </Card>
 
             {/* Learning Outcomes */}
-            <Card className="glass border-border p-6 shadow-subtle">
+            <Card className="glass border-border/50 p-6">
               <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                <Zap className="h-6 w-6" />
+                <Zap className="h-6 w-6 text-secondary" />
                 What You'll Learn
               </h2>
 
               <ul className="space-y-3">
                 {project.learning_outcomes?.map((outcome: string, idx: number) => (
                   <li key={idx} className="flex items-start gap-2">
-                    <Check className="h-5 w-5 mt-0.5 flex-shrink-0" />
+                    <Check className="h-5 w-5 text-secondary mt-0.5 flex-shrink-0" />
                     <span>{outcome}</span>
                   </li>
                 ))}
@@ -201,9 +201,9 @@ const ProjectDetails = () => {
             </Card>
 
             {/* Setup Guide */}
-            <Card className="glass border-border p-6 shadow-subtle">
+            <Card className="glass border-border/50 p-6">
               <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                <Code2 className="h-6 w-6" />
+                <Code2 className="h-6 w-6 text-primary" />
                 How to Run
               </h2>
 
@@ -249,16 +249,16 @@ const ProjectDetails = () => {
           <div className="space-y-6">
 
             {/* Best For */}
-            <Card className="glass border-border p-6 shadow-subtle">
+            <Card className="glass border-border/50 p-6">
               <h3 className="font-semibold mb-3 flex items-center gap-2">
-                <Shield className="h-5 w-5" />
+                <Shield className="h-5 w-5 text-accent" />
                 Best For
               </h3>
               <p className="text-muted-foreground">{project.best_for}</p>
             </Card>
 
             {/* CTA Card */}
-            <Card className="glass border-primary p-6 shadow-medium">
+            <Card className="glass border-primary/30 p-6 glow-primary">
               <h3 className="font-bold text-xl mb-2">Ready to Start?</h3>
               <p className="text-muted-foreground text-sm mb-4">
                 Get instant access to the complete source code and documentation.
@@ -285,27 +285,27 @@ const ProjectDetails = () => {
             </Card>
 
             {/* Support */}
-            <Card className="glass border-border p-6 shadow-subtle">
+            <Card className="glass border-border/50 p-6">
               <h3 className="font-semibold mb-3">What's Included</h3>
 
               <ul className="space-y-2 text-sm">
                 <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4" />
+                  <Check className="h-4 w-4 text-primary" />
                   Complete source code
                 </li>
 
                 <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4" />
+                  <Check className="h-4 w-4 text-primary" />
                   Documentation
                 </li>
 
                 <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4" />
+                  <Check className="h-4 w-4 text-primary" />
                   Setup instructions
                 </li>
 
                 <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4" />
+                  <Check className="h-4 w-4 text-primary" />
                   Lifetime access
                 </li>
               </ul>

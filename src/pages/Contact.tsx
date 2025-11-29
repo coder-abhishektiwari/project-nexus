@@ -11,8 +11,8 @@ const Contact = () => {
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12 animate-fade-in">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                Contact <span className="gradient-text">Us</span>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 gradient-text">
+                Contact Us
               </h1>
               <p className="text-lg text-muted-foreground">
                 Get in touch with Project Nexus. We're here to help with your project needs.
@@ -20,40 +20,40 @@ const Contact = () => {
             </div>
 
             <div className="grid md:grid-cols-3 gap-6 mb-12">
-              <Card className="glass border-border shadow-subtle">
+              <Card className="glass">
                 <CardHeader>
-                  <div className="w-12 h-12 rounded-lg bg-foreground/5 flex items-center justify-center mb-4">
-                    <Mail className="h-6 w-6" />
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <Mail className="h-6 w-6 text-primary" />
                   </div>
                   <CardTitle>Email</CardTitle>
                   <CardDescription>Send us an email anytime</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <a href="mailto:abhishektiwari1706@gmail.com" className="hover:text-foreground transition-colors">
+                  <a href="mailto:abhishektiwari1706@gmail.com" className="text-primary hover:underline">
                     abhishektiwari1706@gmail.com
                   </a>
                 </CardContent>
               </Card>
 
-              <Card className="glass border-border shadow-subtle">
+              <Card className="glass">
                 <CardHeader>
-                  <div className="w-12 h-12 rounded-lg bg-foreground/5 flex items-center justify-center mb-4">
-                    <Phone className="h-6 w-6" />
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <Phone className="h-6 w-6 text-primary" />
                   </div>
                   <CardTitle>Phone</CardTitle>
                   <CardDescription>Call us during business hours</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <a href="tel:+918295599549" className="hover:text-foreground transition-colors">
+                  <a href="tel:+918295599549" className="text-primary hover:underline">
                     +91 829 559 9649
                   </a>
                 </CardContent>
               </Card>
 
-              <Card className="glass border-border shadow-subtle">
+              <Card className="glass">
                 <CardHeader>
-                  <div className="w-12 h-12 rounded-lg bg-foreground/5 flex items-center justify-center mb-4">
-                    <MapPin className="h-6 w-6" />
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <MapPin className="h-6 w-6 text-primary" />
                   </div>
                   <CardTitle>Address</CardTitle>
                   <CardDescription>Visit our office</CardDescription>
@@ -68,7 +68,7 @@ const Contact = () => {
               </Card>
             </div>
 
-            <Card className="glass border-border shadow-subtle">
+            <Card className="glass">
               <CardHeader>
                 <CardTitle>Business Information</CardTitle>
                 <CardDescription>Legal business details</CardDescription>

@@ -10,12 +10,12 @@ const ProjectCard = ({ project }: any) => {
     useProjectDownload(project);
 
   return (
-    <Card className="glass border-border overflow-hidden hover-scale group cursor-pointer shadow-subtle hover:shadow-medium transition-all">
+    <Card className="glass border-border/50 overflow-hidden hover-scale group cursor-pointer">
       <div className="aspect-video relative overflow-hidden bg-muted">
         <img 
           src={project.screenshot_url} 
           alt={project.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
         />
 
         <div className="absolute top-3 right-3">
@@ -51,13 +51,13 @@ const ProjectCard = ({ project }: any) => {
       
       <CardFooter className="p-6 pt-0 gap-2">
         <Link to={`/project/${project.id}`} className="flex-1">
-          <Button variant="outline" className="w-full glass">
+          <Button variant="outline" className="w-full">
             <ExternalLink className="mr-2 h-4 w-4" /> View Details
           </Button>
         </Link>
 
         <Button 
-          className="flex-1 shadow-subtle"
+          className="flex-1 glow-primary"
           onClick={handleDownload}
           disabled={paymentLoading}
         >
