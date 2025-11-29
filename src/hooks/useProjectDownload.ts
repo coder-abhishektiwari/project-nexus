@@ -42,6 +42,12 @@ export function useProjectDownload(project: any) {
 
     // Free or purchased → Direct download
     if (project.is_free || hasPurchased) {
+      await (supabase.rpc as any)("increment", {
+        table_name: "projects",
+        row_id: project.id,
+        column_name: "downloads_count"
+      });
+
       if (fileUrl) {
         window.open(fileUrl, "_blank");
       } else {
