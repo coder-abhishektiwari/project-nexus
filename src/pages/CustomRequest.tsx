@@ -111,7 +111,7 @@ const CustomRequest = () => {
           {/* Header */}
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Request a <span className="gradient-text">Custom Project</span>
+              Request a Custom <span className="gradient-text">Project</span>
             </h1>
             <p className="text-muted-foreground text-lg">
               Can't find what you're looking for? Tell us what you need and we'll build it for you.
@@ -119,7 +119,7 @@ const CustomRequest = () => {
           </div>
 
           {/* Form */}
-          <Card className="glass border-border/50 p-8">
+          <Card className="glass border-border p-8 shadow-medium">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Full Name */}
               <div className="space-y-2">
@@ -243,7 +243,7 @@ const CustomRequest = () => {
               <Button
                 type="submit"
                 size="lg"
-                className="w-full glow-primary"
+                className="w-full shadow-medium"
                 disabled={loading}
               >
                 {loading ? (
@@ -260,16 +260,16 @@ const CustomRequest = () => {
 
           {/* Info Section */}
           <div className="mt-12 grid md:grid-cols-3 gap-6">
-            <Card className="glass border-border/50 p-6 text-center">
-              <div className="text-3xl font-bold text-primary mb-2">24h</div>
+            <Card className="glass border-border p-6 text-center shadow-subtle">
+              <div className="text-3xl font-bold mb-2">24h</div>
               <p className="text-sm text-muted-foreground">Response Time</p>
             </Card>
-            <Card className="glass border-border/50 p-6 text-center">
-              <div className="text-3xl font-bold text-secondary mb-2">100%</div>
+            <Card className="glass border-border p-6 text-center shadow-subtle">
+              <div className="text-3xl font-bold mb-2">100%</div>
               <p className="text-sm text-muted-foreground">Custom Built</p>
             </Card>
-            <Card className="glass border-border/50 p-6 text-center">
-              <div className="text-3xl font-bold text-accent mb-2">∞</div>
+            <Card className="glass border-border p-6 text-center shadow-subtle">
+              <div className="text-3xl font-bold mb-2">∞</div>
               <p className="text-sm text-muted-foreground">Lifetime Support</p>
             </Card>
           </div>

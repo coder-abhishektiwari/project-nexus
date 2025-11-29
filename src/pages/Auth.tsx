@@ -76,23 +76,22 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      {/* Animated background */}
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/20 rounded-full blur-3xl animate-float" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-3xl animate-float" style={{ animationDelay: "1s" }} />
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Subtle grid background */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem]" />
 
       <div className="w-full max-w-md z-10 animate-fade-in">
         {/* Logo */}
         <Link to="/" className="flex items-center justify-center gap-2 mb-8">
-          <div className="p-2 rounded-lg bg-gradient-to-br from-primary to-secondary">
+          <div className="p-2 rounded-lg bg-primary">
             <Code2 className="h-8 w-8 text-primary-foreground" />
           </div>
-          <span className="font-bold text-2xl gradient-text">ProjectHub</span>
+          <span className="font-bold text-2xl">Project Nexus</span>
         </Link>
 
-        <Card className="glass border-border/50 p-8">
+        <Card className="glass border-border p-8 shadow-medium">
           <Tabs defaultValue="login" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-8">
+            <TabsList className="grid w-full grid-cols-2 mb-8 glass">
               <TabsTrigger value="login">Login</TabsTrigger>
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
             </TabsList>
@@ -128,7 +127,7 @@ const Auth = () => {
 
                 <Button
                   type="submit"
-                  className="w-full glow-primary"
+                  className="w-full shadow-medium"
                   disabled={loading}
                 >
                   {loading ? "Logging in..." : "Login"}
@@ -183,7 +182,7 @@ const Auth = () => {
 
                 <Button
                   type="submit"
-                  className="w-full glow-primary"
+                  className="w-full shadow-medium"
                   disabled={loading}
                 >
                   {loading ? "Creating account..." : "Create Account"}
