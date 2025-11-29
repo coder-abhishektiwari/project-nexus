@@ -55,69 +55,77 @@ const RequestsViewer = () => {
   };
 
   return (
-    <Card className="glass border-border/50 p-6">
-      <h2 className="text-2xl font-bold mb-6">Custom Project Requests</h2>
-
+    <Card className="bg-white shadow-sm border border-gray-200 rounded-xl p-6 text-black">
+    <h2 className="text-2xl font-bold tracking-tight mb-6">
+        <span className="inline-flex items-center gap-2">
+            Custom Project Requests
+        </span>
+    </h2>
       {isLoading ? (
         <div className="flex justify-center py-8">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
         </div>
       ) : (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto rounded-lg ring-1 ring-gray-100">
           <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Date</TableHead>
-                <TableHead>Student</TableHead>
-                <TableHead>Project Idea</TableHead>
-                <TableHead>Technologies</TableHead>
-                <TableHead>Budget</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
+            <TableHeader className="bg-gray-50/50"> {/* 🟢 Added Header Style */}
+              <TableRow className="border-b border-gray-200 hover:bg-transparent">
+                <TableHead className="h-12 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</TableHead>
+                <TableHead className="h-12 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Student</TableHead>
+                <TableHead className="h-12 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Project Idea</TableHead>
+                <TableHead className="h-12 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Technologies</TableHead>
+                <TableHead className="h-12 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Budget</TableHead>
+                <TableHead className="h-12 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</TableHead>
+                <TableHead className="h-12 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {requests?.map((request) => (
-                <TableRow key={request.id}>
-                  <TableCell className="text-sm">
+                <TableRow
+                  key={request.id}
+                  className="group border-b border-gray-100 hover:bg-gray-50/60 transition-colors duration-200" 
+                >
+                  <TableCell className="px-6 py-4 text-sm font-mono text-gray-700"> 
                     {format(new Date(request.created_at), 'MMM dd, yyyy')}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="px-6 py-4">
                     <div>
-                      <div className="font-medium">{request.full_name}</div>
-                      <div className="text-sm text-muted-foreground">{request.email}</div>
+                      <div className="font-semibold text-gray-900">{request.full_name}</div> 
+                      <div className="text-xs text-gray-500">{request.email}</div> 
                       {request.college && (
-                        <div className="text-xs text-muted-foreground">{request.college} - {request.year}</div>
-                      )}
+                        <div className="text-[10px] text-gray-400 mt-0.5">{request.college} - {request.year}</div> 
+                        )}
                     </div>
                   </TableCell>
-                  <TableCell className="max-w-xs">
-                    <div className="truncate" title={request.project_idea}>
+                  <TableCell className="px-6 py-4 max-w-[250px]"> 
+                    <div className="truncate text-sm text-gray-700" title={request.project_idea}>
                       {request.project_idea}
                     </div>
                     {request.suggested_name && (
-                      <div className="text-xs text-muted-foreground mt-1">
-                        Name: {request.suggested_name}
+                      <div className="text-xs text-gray-500 mt-1">
+                        **Name:** {request.suggested_name}
                       </div>
                     )}
                   </TableCell>
-                  <TableCell>
-                    <div className="text-sm">{request.technologies}</div>
+                  <TableCell className="px-6 py-4">
+                    <div className="text-sm text-gray-700">{request.technologies}</div>
                   </TableCell>
-                  <TableCell>
-                    <Badge variant="outline">{request.budget}</Badge>
+                  <TableCell className="px-6 py-4 font-medium"> 
+                    <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200"> 
+                      {request.budget}
+                    </Badge>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="px-6 py-4">
                     <Badge className={getStatusColor(request.status)}>
                       {request.status.replace('_', ' ')}
                     </Badge>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="px-6 py-4">
                     <Select
                       value={request.status}
                       onValueChange={(value) => updateStatusMutation.mutate({ id: request.id, status: value })}
                     >
-                      <SelectTrigger className="w-32">
+                      <SelectTrigger className="w-32 h-9 bg-white border-gray-200 hover:border-gray-300 transition-colors">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>

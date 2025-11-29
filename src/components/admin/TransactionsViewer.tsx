@@ -64,72 +64,87 @@ const TransactionsViewer = () => {
   const totalRevenue = transactions?.reduce((sum, t) => sum + Number(t.amount), 0) || 0;
 
   return (
-    <Card className="glass border-border/50 p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Transactions</h2>
+    <Card className="bg-white shadow-sm border border-gray-200 rounded-xl p-6 text-black">
+    {/* 1. Header Section Styling */}
+    <div className="flex justify-between items-center mb-6 border-gray-100 pb-4">
+        <h2 className="text-2xl font-bold tracking-tight">
+            Transactions
+        </h2>
         <div className="text-right">
-          <div className="text-sm text-muted-foreground">Total Revenue</div>
-          <div className="text-2xl font-bold text-primary">₹{totalRevenue.toFixed(2)}</div>
-        </div>
-      </div>
-
-      {isLoading ? (
-        <div className="flex justify-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-        </div>
-      ) : (
-        <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Date</TableHead>
-                <TableHead>User</TableHead>
-                <TableHead>Project</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead>Payment ID</TableHead>
-                <TableHead>Status</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {transactions?.map((transaction) => (
-                <TableRow key={transaction.id}>
-                  <TableCell className="text-sm">
-                    {format(new Date(transaction.created_at), 'MMM dd, yyyy HH:mm')}
-                  </TableCell>
-                  <TableCell>
-                    <div>
-                      <div className="font-medium">{transaction.profile?.full_name}</div>
-                      <div className="text-sm text-muted-foreground">{transaction.profile?.email}</div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="font-medium">
-                    {transaction.projects?.name}
-                  </TableCell>
-                  <TableCell>
-                    <span className="font-semibold">₹{Number(transaction.amount).toFixed(2)}</span>
-                  </TableCell>
-                  <TableCell>
-                    <code className="text-xs bg-muted px-2 py-1 rounded">
-                      {transaction.payment_id}
-                    </code>
-                  </TableCell>
-                  <TableCell>
-                    <Badge className={getStatusColor(transaction.payment_status)}>
-                      {transaction.payment_status}
-                    </Badge>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          {transactions?.length === 0 && (
-            <div className="text-center py-8 text-muted-foreground">
-              No transactions yet
+            <div className="text-sm text-gray-500 font-medium">Total Revenue</div>
+            <div className="text-3xl font-extrabold text-green-600 tracking-tight">
+                {/* Assuming totalRevenue is available */}
+                ₹{totalRevenue.toFixed(2)}
             </div>
-          )}
         </div>
-      )}
-    </Card>
+    </div>
+
+    {/* 2. Loading State Styling */}
+    {isLoading ? (
+        <div className="flex justify-center py-12">
+            <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-primary"></div>
+        </div>
+    ) : (
+        <div className="overflow-x-auto rounded-lg ring-1 ring-gray-100">
+            {/* 3. Table Styling */}
+            <Table>
+                <TableHeader className="bg-gray-50/50">
+                    <TableRow className="border-b border-gray-200 hover:bg-transparent">
+                        <TableHead className="h-12 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</TableHead>
+                        <TableHead className="h-12 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">User</TableHead>
+                        <TableHead className="h-12 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Project</TableHead>
+                        <TableHead className="h-12 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Amount</TableHead>
+                        <TableHead className="h-12 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Payment ID</TableHead>
+                        <TableHead className="h-12 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {transactions?.map((transaction) => (
+                        <TableRow 
+                            key={transaction.id}
+                            className="group border-b border-gray-100 hover:bg-gray-50/60 transition-colors duration-200"
+                        >
+                            <TableCell className="px-6 py-4 text-xs font-mono text-gray-700">
+                                {/* Assuming 'format' function is imported and works */}
+                                {format(new Date(transaction.created_at), 'MMM dd, yyyy HH:mm')}
+                            </TableCell>
+                            <TableCell className="px-6 py-4">
+                                <div>
+                                    <div className="font-semibold text-gray-900">{transaction.profile?.full_name}</div>
+                                    <div className="text-xs text-gray-500">{transaction.profile?.email}</div>
+                                </div>
+                            </TableCell>
+                            <TableCell className="px-6 py-4 font-medium text-gray-700 max-w-[200px] truncate">
+                                {transaction.projects?.name}
+                            </TableCell>
+                            <TableCell className="px-6 py-4 text-right">
+                                <span className="font-extrabold text-green-700">
+                                    ₹{Number(transaction.amount).toFixed(2)}
+                                </span>
+                            </TableCell>
+                            <TableCell className="px-6 py-4">
+                                <code className="text-[10px] bg-gray-100 text-gray-600 px-2 py-1 rounded font-mono">
+                                    {transaction.payment_id}
+                                </code>
+                            </TableCell>
+                            <TableCell className="px-6 py-4">
+                                <Badge className={getStatusColor(transaction.payment_status)}>
+                                    {transaction.payment_status}
+                                </Badge>
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+            {/* 4. No Data State Styling */}
+            {transactions?.length === 0 && (
+                <div className="text-center py-10 text-gray-500 border-t border-gray-100 mt-0">
+                    No transactions yet
+                </div>
+            )}
+        </div>
+    )}
+</Card>
   );
 };
 

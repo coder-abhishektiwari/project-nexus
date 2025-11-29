@@ -65,50 +65,64 @@ const UserManagement = () => {
 
   return (
     <>
-      <Card className="glass border-border/50 p-6">
-        <h2 className="text-2xl font-bold mb-6">User Management</h2>
+      <Card className="bg-white shadow-sm border border-gray-200 rounded-xl p-6 text-black">
+        <h2 className="text-2xl font-bold tracking-tight mb-6">
+          User Management
+        </h2>
 
         {isLoading ? (
-          <div className="flex justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <div className="flex justify-center py-12">
+            <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-primary"></div>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Mobile</TableHead>
-                  <TableHead>College</TableHead>
-                  <TableHead>Course</TableHead>
-                  <TableHead>Specialization</TableHead>
-                  <TableHead>Year</TableHead>
-                  <TableHead>Joined</TableHead>
-                  <TableHead>Updated</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+          <div className="overflow-x-auto rounded-lg ring-1 ring-gray-100">
+            <Table >
+              <TableHeader className="bg-gray-50/50">
+                <TableRow className="border-b border-gray-200 hover:bg-transparent">
+                  <TableHead className="h-12 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">User</TableHead>
+                  <TableHead className="h-12 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Mobile</TableHead>
+                  <TableHead className="h-12 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">College</TableHead>
+                  <TableHead className="h-12 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Course</TableHead>
+                  <TableHead className="h-12 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Specialization</TableHead>
+                  <TableHead className="h-12 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Year</TableHead>
+                  <TableHead className="h-12 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Joined</TableHead>
+                  <TableHead className="h-12 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Updated</TableHead>
+                  <TableHead className="h-12 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
 
               <TableBody>
                 {users?.map((user: any) => (
-                  <TableRow key={user.id}>
-                    <TableCell>{user.full_name}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.mobile || "-"}</TableCell>
-                    <TableCell>{user.college || "-"}</TableCell>
-                    <TableCell>{user.course || "-"}</TableCell>
-                    <TableCell>{user.specialization || "-"}</TableCell>
-                    <TableCell>{user.year || "-"}</TableCell>
-                    <TableCell>{format(new Date(user.created_at), "MMM dd, yyyy")}</TableCell>
-                    <TableCell>{format(new Date(user.updated_at), "MMM dd, yyyy")}</TableCell>
+                  <TableRow
+                    key={user.id}
+                    className="group border-b border-gray-100 hover:bg-gray-50/60 transition-colors duration-200"
+                  >
+                    <TableCell className="px-6 py-4">
+                      <div className="font-semibold text-gray-900 whitespace-nowrap">{user.full_name}</div>
+                      <div className="text-xs text-gray-500 whitespace-nowrap">{user.email}</div>
+                    </TableCell>
+                    <TableCell className="px-6 py-4 text-sm text-gray-700 font-mono">{user.mobile || "-"}</TableCell> {/* 🟢 Styled Mobile */}
+                    <TableCell className="px-6 py-4 text-xs text-gray-600 max-w-[150px] truncate">{user.college || "-"}</TableCell>
+                    <TableCell className="px-6 py-4 text-xs text-gray-600">{user.course || "-"}</TableCell>
+                    <TableCell className="px-6 py-4 text-xs text-gray-600">{user.specialization || "-"}</TableCell>
+                    <TableCell className="px-6 py-4 text-xs text-gray-600">{user.year || "-"}</TableCell>
+                    <TableCell className="px-6 py-4 text-xs text-gray-500">{format(new Date(user.created_at), "MMM dd, yyyy")}</TableCell> {/* 🟢 Styled Date */}
+                    <TableCell className="px-6 py-4 text-xs text-gray-500">{format(new Date(user.updated_at), "MMM dd, yyyy")}</TableCell> {/* 🟢 Styled Date */}
 
-                    <TableCell className="flex gap-2 justify-end">
-                      <Button variant="ghost" size="sm" onClick={() => handleEdit(user)}>
-                        <Pencil className="h-4 w-4" />
+                    <TableCell className="px-6 py-4 flex gap-2 justify-end">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleEdit(user)}
+                        className="hover:bg-blue-100/50">
+                        <Pencil className="h-4 w-4 text-blue-600" /> 
                       </Button>
-                      <Button variant="ghost" size="sm" onClick={() => handleDelete(user.id)}>
-                        <Trash2 className="h-4 w-4 text-red-500" />
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDelete(user.id)}
+                        className="hover:bg-red-100/50">
+                        <Trash2 className="h-4 w-4 text-red-600" /> 
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -117,13 +131,13 @@ const UserManagement = () => {
             </Table>
 
             {users?.length === 0 && (
-              <p className="text-center text-muted-foreground py-8">No users found</p>
+              <p className="text-center text-gray-500 py-10 border-t border-gray-100">No users found</p>
             )}
           </div>
         )}
       </Card>
 
-      {/* Edit User Modal */}
+      {/* Edit User Modal - Unchanged logic */}
       {isEditOpen && (
         <EditUserModal
           open={isEditOpen}
