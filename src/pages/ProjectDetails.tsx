@@ -11,7 +11,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
-import { Download, ExternalLink, Check, Code2, Layers, Sparkles, Shield, Zap, Loader2 } from "lucide-react";
+import { Download, ExternalLink, Check, Code2, Layers, Sparkles, Shield, Zap, Loader2, ArrowLeft } from "lucide-react";
 
 const ProjectDetails = () => {
   const { id } = useParams();
@@ -42,230 +42,245 @@ const ProjectDetails = () => {
 
   if (loading || !project) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-2">
-            Project Not Found
-          </h2>
-          <Button onClick={() => navigate('/projects')}>
-            Back to Projects
-          </Button>
+      <div className="min-h-screen bg-slate-50/50 flex items-center justify-center p-4">
+        <div className="text-center max-w-sm">
+          <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">Project Not Found</h2>
+            <p className="text-slate-500 mb-6">The project you're looking for might have been moved or deleted.</p>
+            <Button className="w-full bg-indigo-600 hover:bg-indigo-700" onClick={() => navigate('/projects')}>
+              <ArrowLeft className="mr-2 h-4 w-4" /> Back to Projects
+            </Button>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[#FAFAFB]"> {/* Very light grey background for contrast with white cards */}
       <Navbar />
 
-      <main className="w-full px-20 pt-24 pb-16">
+      <main className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20 pt-32 pb-24">
+        
         {/* Hero Section */}
-        <div className="grid md:grid-cols-2 gap-8 mb-16 animate-fade-in">
-          <div>
-            <div className="flex items-center gap-3 mb-4">
+        <div className="grid lg:grid-cols-2 gap-12 items-center mb-20 animate-fade-in">
+          <div className="space-y-6">
+            <div className="flex items-center gap-3">
               {project.is_free ? (
-                <Badge className="bg-accent text-accent-foreground text-lg px-4 py-1">
-                  Free
-                </Badge>) : (
-                <Badge className="bg-primary text-primary-foreground text-lg px-4 py-1">
+                <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-50 px-3 py-1 text-sm font-medium">
+                  Free Access
+                </Badge>
+              ) : (
+                <Badge className="bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-50 px-3 py-1 text-sm font-medium">
                   ₹{project.price}
-                </Badge>)}
-              <Badge variant="secondary">
+                </Badge>
+              )}
+              <Badge variant="outline" className="text-slate-500 border-slate-200 bg-white">
                 Production Ready
               </Badge>
               {hasPurchased && (
-                <Badge className="bg-green-500/20 text-green-500">
+                <Badge className="bg-blue-50 text-blue-700 border-blue-200">
                   Purchased
                 </Badge>
               )}
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+
+            <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.1]">
               {project.name}
             </h1>
-            <p className="text-muted-foreground text-lg mb-6">
+            
+            <p className="text-slate-600 text-lg md:text-xl leading-relaxed max-w-xl">
               {project.description}
             </p>
-            <div className="flex flex-wrap gap-2 mb-8">
-              {project.technologies?.map((
-                tech: string, idx: number) => (
-                <Badge key={idx} variant="outline" className="text-sm">
+
+            <div className="flex flex-wrap gap-2">
+              {project.technologies?.map((tech: string, idx: number) => (
+                <span key={idx} className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200/50">
                   {tech}
-                </Badge>
+                </span>
               ))}
             </div>
-            <div className="flex gap-3">
-              <Button size="lg" className="glow-primary flex-1" onClick={handleDownload} disabled={paymentLoading} >
+
+            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <Button size="lg" className="h-14 px-8 text-lg bg-indigo-600 hover:bg-indigo-700 text-white transition-all shadow-lg shadow-indigo-200" onClick={handleDownload} disabled={paymentLoading} >
                 {paymentLoading ? (
                   <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                 ) : (
                   <Download className="mr-2 h-5 w-5" />
                 )}
-                {hasPurchased ? "Download" : project.is_free ? "Download Now" : "Buy Now"}
+                {hasPurchased ? "Download Files" : project.is_free ? "Download Now" : "Unlock Project"}
               </Button>
+              
               {project.sandbox_url && (
-                <Button size="lg" variant="outline" className="glass" asChild>
+                <Button size="lg" variant="outline" className="h-14 px-8 text-lg border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm" asChild>
                   <a href={project.sandbox_url} target="_blank" rel="noopener noreferrer">
                     <ExternalLink className="mr-2 h-5 w-5" />
-                    Live Demo
+                    Live Preview
                   </a>
                 </Button>
               )}
             </div>
           </div>
 
-          <div className="glass rounded-2xl overflow-hidden border border-border/50">
-            <img src={project.screenshot_url} className="w-full h-full object-cover" />
+          <div className="relative group">
+            <div className="absolute -inset-1 bg-gradient-to-r from-indigo-100 to-purple-100 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-1000"></div>
+            <Card className="relative overflow-hidden border-slate-200 shadow-2xl rounded-2xl">
+              <img 
+                src={project.screenshot_url} 
+                className="w-full aspect-video object-cover hover:scale-105 transition-transform duration-700" 
+                alt={project.name}
+              />
+            </Card>
           </div>
         </div>
 
         {/* Gallery Slider */}
         {project.gallery_urls?.length > 0 && (
-          <div className="mb-16">
+          <div className="mb-20">
+            <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-widest mb-6">Visual Overview</h3>
             <Swiper
               modules={[Navigation]}
               navigation
-              slidesPerView={2.2}       // 2 full + 3rd ka 20% (adjust below)
-              spaceBetween={20}
-              centeredSlides={false}
-              slidesOffsetAfter={60}     // 10% approx visible
-              slidesOffsetBefore={0}
-              className="rounded-xl"
+              slidesPerView={1.2}
+              spaceBetween={24}
+              breakpoints={{
+                768: { slidesPerView: 2.2 },
+                1024: { slidesPerView: 2.5 }
+              }}
+              className="rounded-2xl pb-4"
             >
               {project.gallery_urls.map((img: string, idx: number) => (
                 <SwiperSlide key={idx}>
-                  <div className="glass rounded-xl overflow-hidden border border-border/50 aspect-video">
+                  <Card className="overflow-hidden border-slate-200 shadow-md group">
                     <img
                       src={img}
-                      className="w-full h-full object-cover"
+                      className="w-full aspect-[16/10] object-cover group-hover:scale-105 transition-transform duration-500"
                       alt={`Screenshot ${idx + 1}`}
                     />
-                  </div>
+                  </Card>
                 </SwiperSlide>
               ))}
             </Swiper>
           </div>
         )}
 
-
-
         {/* Two Column Layout */}
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-10">
 
           {/* Main Content */}
-          <div className="md:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-10">
 
             {/* About */}
-            <Card className="glass border-border/50 p-6">
-              <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                <Layers className="h-6 w-6 text-primary" />
-                About This Project
+            <section>
+              <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                <div className="p-2 bg-indigo-50 rounded-lg">
+                  <Layers className="h-5 w-5 text-indigo-600" />
+                </div>
+                Project Details
               </h2>
-              <p className="text-muted-foreground leading-relaxed">
-                {project.long_description}
-              </p>
-            </Card>
+              <Card className="bg-white border-slate-200 p-8 shadow-sm">
+                <p className="text-slate-600 leading-relaxed text-lg whitespace-pre-line">
+                  {project.long_description}
+                </p>
+              </Card>
+            </section>
 
             {/* Features */}
-            <Card className="glass border-border/50 p-6">
-              <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                <Sparkles className="h-6 w-6 text-accent" />
+            <section>
+              <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                <div className="p-2 bg-amber-50 rounded-lg">
+                  <Sparkles className="h-5 w-5 text-amber-600" />
+                </div>
                 Key Features
               </h2>
-
-              <ul className="grid md:grid-cols-2 gap-3">
+              <div className="grid sm:grid-cols-2 gap-4">
                 {project.features?.map((feature: string, idx: number) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                    <span>{feature}</span>
-                  </li>
+                  <Card key={idx} className="p-5 border-slate-100 bg-white hover:border-indigo-100 transition-colors shadow-sm flex items-start gap-4">
+                    <div className="mt-1 bg-indigo-50 rounded-full p-1">
+                      <Check className="h-4 w-4 text-indigo-600" />
+                    </div>
+                    <span className="text-slate-700 font-medium leading-tight">{feature}</span>
+                  </Card>
                 ))}
-              </ul>
-            </Card>
+              </div>
+            </section>
 
             {/* Learning Outcomes */}
-            <Card className="glass border-border/50 p-6">
-              <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                <Zap className="h-6 w-6 text-secondary" />
-                What You'll Learn
-              </h2>
-
-              <ul className="space-y-3">
-                {project.learning_outcomes?.map((outcome: string, idx: number) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <Check className="h-5 w-5 text-secondary mt-0.5 flex-shrink-0" />
-                    <span>{outcome}</span>
-                  </li>
-                ))}
-              </ul>
-            </Card>
+            <section>
+              <Card className="bg-slate-900 text-white p-8 rounded-2xl border-0 shadow-xl overflow-hidden relative">
+                <div className="absolute top-0 right-0 -mt-4 -mr-4 opacity-10">
+                  <Zap className="h-32 w-32" />
+                </div>
+                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3 relative z-10">
+                   What You'll Learn
+                </h2>
+                <ul className="grid sm:grid-cols-2 gap-y-4 gap-x-8 relative z-10">
+                  {project.learning_outcomes?.map((outcome: string, idx: number) => (
+                    <li key={idx} className="flex items-start gap-3 text-slate-300">
+                      <Check className="h-5 w-5 text-indigo-400 mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">{outcome}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            </section>
 
             {/* Setup Guide */}
-            <Card className="glass border-border/50 p-6">
-              <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                <Code2 className="h-6 w-6 text-primary" />
-                How to Run
+            <section>
+              <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                <div className="p-2 bg-slate-100 rounded-lg">
+                  <Code2 className="h-5 w-5 text-slate-700" />
+                </div>
+                Developer Guide
               </h2>
-
-              <div className="space-y-4">
-
-                {/* Dependencies */}
-                {project.dependencies?.length > 0 && (
-                  <div>
-                    <h3 className="font-semibold mb-2">Prerequisites:</h3>
-                    <ul className="space-y-1">
-                      {project.dependencies.map((dep: string, idx: number) => (
-                        <li key={idx} className="text-muted-foreground">
-                          • {dep}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {/* Setup Steps */}
-                {project.setup_steps?.length > 0 && (
-                  <div>
-                    <h3 className="font-semibold mb-2">Setup Steps:</h3>
-                    <ol className="space-y-2">
-                      {project.setup_steps.map((step: string, idx: number) => (
-                        <li key={idx} className="flex gap-3">
-                          <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-sm font-semibold">
-                            {idx + 1}
+              <Card className="bg-white border-slate-200 p-8 shadow-sm">
+                <div className="space-y-8">
+                  {project.dependencies?.length > 0 && (
+                    <div>
+                      <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Prerequisites</h3>
+                      <div className="flex flex-wrap gap-2">
+                        {project.dependencies.map((dep: string, idx: number) => (
+                          <span key={idx} className="px-3 py-1.5 bg-slate-50 border border-slate-100 rounded text-slate-600 text-sm font-mono">
+                            {dep}
                           </span>
-                          <span className="text-muted-foreground">{step}</span>
-                        </li>
-                      ))}
-                    </ol>
-                  </div>
-                )}
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
-              </div>
-            </Card>
+                  {project.setup_steps?.length > 0 && (
+                    <div>
+                      <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Installation Steps</h3>
+                      <div className="space-y-4">
+                        {project.setup_steps.map((step: string, idx: number) => (
+                          <div key={idx} className="flex gap-4 p-4 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100">
+                            <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-sm font-bold shadow-md shadow-indigo-100">
+                              {idx + 1}
+                            </span>
+                            <p className="text-slate-600 pt-1 leading-relaxed">{step}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </Card>
+            </section>
 
           </div>
 
           {/* Sidebar */}
           <div className="space-y-6">
-
-            {/* Best For */}
-            <Card className="glass border-border/50 p-6">
-              <h3 className="font-semibold mb-3 flex items-center gap-2">
-                <Shield className="h-5 w-5 text-accent" />
-                Best For
-              </h3>
-              <p className="text-muted-foreground">{project.best_for}</p>
-            </Card>
-
+            
             {/* CTA Card */}
-            <Card className="glass border-primary/30 p-6 glow-primary">
-              <h3 className="font-bold text-xl mb-2">Ready to Start?</h3>
-              <p className="text-muted-foreground text-sm mb-4">
-                Get instant access to the complete source code and documentation.
+            <Card className="bg-white border-indigo-100 p-8 shadow-xl shadow-indigo-50/50 sticky top-24 rounded-2xl ring-1 ring-indigo-50">
+              <h3 className="font-bold text-2xl text-slate-900 mb-3">Get Started</h3>
+              <p className="text-slate-500 text-sm mb-6 leading-relaxed">
+                Unlock full access to the source code, documentation, and asset files.
               </p>
 
               <Button
-                className="w-full"
+                className="w-full h-12 text-md font-semibold bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-100 mb-6"
                 size="lg"
                 onClick={handleDownload}
                 disabled={paymentLoading}
@@ -279,36 +294,37 @@ const ProjectDetails = () => {
                 {hasPurchased
                   ? "Download Now"
                   : project.is_free
-                    ? "Download Free"
+                    ? "Get it Free"
                     : `Buy for ₹${project.price}`}
               </Button>
+
+              <div className="space-y-4 pt-6 border-t border-slate-100">
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">What's Included</h4>
+                <ul className="space-y-3">
+                  {[
+                    "Complete source code",
+                    "Asset files & Resources",
+                    "Setup instructions",
+                    "Lifetime access"
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-center gap-3 text-sm text-slate-600 font-medium">
+                      <div className="h-5 w-5 rounded-full bg-emerald-50 flex items-center justify-center">
+                        <Check className="h-3 w-3 text-emerald-600" />
+                      </div>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </Card>
 
-            {/* Support */}
-            <Card className="glass border-border/50 p-6">
-              <h3 className="font-semibold mb-3">What's Included</h3>
-
-              <ul className="space-y-2 text-sm">
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-primary" />
-                  Complete source code
-                </li>
-
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-primary" />
-                  Documentation
-                </li>
-
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-primary" />
-                  Setup instructions
-                </li>
-
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-primary" />
-                  Lifetime access
-                </li>
-              </ul>
+            {/* Best For */}
+            <Card className="bg-slate-50/50 border-slate-200 p-6 shadow-sm rounded-xl">
+              <h3 className="font-bold text-slate-900 mb-3 flex items-center gap-2">
+                <Shield className="h-5 w-5 text-indigo-500" />
+                Target Audience
+              </h3>
+              <p className="text-slate-600 text-sm leading-relaxed">{project.best_for}</p>
             </Card>
 
           </div>

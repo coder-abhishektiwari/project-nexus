@@ -50,7 +50,15 @@ export function useProjectDownload(project: any) {
 
 
       if (fileUrl) {
-        window.open(fileUrl, "_blank");
+        // window.open(fileUrl, "_blank");
+        const hiddenLink = document.createElement("a");
+        hiddenLink.href = fileUrl;
+        hiddenLink.download = project.name || "project.zip";
+        hiddenLink.style.display = "none";
+        document.body.appendChild(hiddenLink);
+        hiddenLink.click();
+        document.body.removeChild(hiddenLink);
+
       } else {
         toast({ title: "No Download Link!", variant: "destructive" });
       }

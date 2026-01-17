@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Terms = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
       <main className="flex-1 pt-20">
         <div className="container mx-auto px-4 py-12">
@@ -18,7 +18,7 @@ const Terms = () => {
               </p>
             </div>
 
-            <Card className="glass mb-6">
+            <Card className="card mb-6">
               <CardHeader>
                 <CardTitle>1. Acceptance of Terms</CardTitle>
               </CardHeader>
@@ -30,7 +30,7 @@ const Terms = () => {
               </CardContent>
             </Card>
 
-            <Card className="glass mb-6">
+            <Card className="card mb-6">
               <CardHeader>
                 <CardTitle>2. Use of Services</CardTitle>
               </CardHeader>
@@ -47,7 +47,7 @@ const Terms = () => {
               </CardContent>
             </Card>
 
-            <Card className="glass mb-6">
+            <Card className="card mb-6">
               <CardHeader>
                 <CardTitle>3. Intellectual Property</CardTitle>
               </CardHeader>
@@ -59,7 +59,7 @@ const Terms = () => {
               </CardContent>
             </Card>
 
-            <Card className="glass mb-6">
+            <Card className="card mb-6">
               <CardHeader>
                 <CardTitle>4. Payment and Pricing</CardTitle>
               </CardHeader>
@@ -71,7 +71,7 @@ const Terms = () => {
               </CardContent>
             </Card>
 
-            <Card className="glass mb-6">
+            <Card className="card mb-6">
               <CardHeader>
                 <CardTitle>5. Project Delivery</CardTitle>
               </CardHeader>
@@ -83,7 +83,7 @@ const Terms = () => {
               </CardContent>
             </Card>
 
-            <Card className="glass mb-6">
+            <Card className="card mb-6">
               <CardHeader>
                 <CardTitle>6. Support and Updates</CardTitle>
               </CardHeader>
@@ -96,7 +96,7 @@ const Terms = () => {
               </CardContent>
             </Card>
 
-            <Card className="glass mb-6">
+            <Card className="card mb-6">
               <CardHeader>
                 <CardTitle>7. Limitation of Liability</CardTitle>
               </CardHeader>
@@ -109,7 +109,7 @@ const Terms = () => {
               </CardContent>
             </Card>
 
-            <Card className="glass mb-6">
+            <Card className="card mb-6">
               <CardHeader>
                 <CardTitle>8. Termination</CardTitle>
               </CardHeader>
@@ -121,7 +121,7 @@ const Terms = () => {
               </CardContent>
             </Card>
 
-            <Card className="glass mb-6">
+            <Card className="card mb-6">
               <CardHeader>
                 <CardTitle>9. Changes to Terms</CardTitle>
               </CardHeader>
@@ -134,7 +134,7 @@ const Terms = () => {
               </CardContent>
             </Card>
 
-            <Card className="glass">
+            <Card className="card">
               <CardHeader>
                 <CardTitle>10. Contact Information</CardTitle>
               </CardHeader>

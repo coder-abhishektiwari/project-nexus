@@ -15,6 +15,8 @@ import AdminLogin from "./pages/AdminLogin";
 import Contact from "./pages/Contact";
 import Terms from "./pages/Terms";
 import RefundPolicy from "./pages/RefundPolicy";
+import OthersRevenue from "./pages/Others-Revenue";
+import SellerApplicationForm from "./pages/SellerApplicationForm";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -50,6 +52,8 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/refund-policy" element={<RefundPolicy />} />
+          <Route path="/others-revneue" element={<OthersRevenue />} />
+          <Route path="/become-seller" element={<SellerApplicationForm />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

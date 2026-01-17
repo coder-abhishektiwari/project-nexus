@@ -1,16 +1,25 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Code2, Menu, X, Shield } from "lucide-react";
-import { useState } from "react";
+import { Menu, X, Shield, Sparkles } from "lucide-react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import logo from "../images/logo.png";
+import ProfileDropdown from "@/components/ProfileDropdown";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
+
+  // Scroll effect for sticky header
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const { data: isAdmin } = useQuery({
     queryKey: ['is-admin', user?.id],
@@ -27,140 +36,124 @@ const Navbar = () => {
     enabled: !!user,
   });
 
+  const navLinks = [
+    { name: "Home", path: "/" },
+    { name: "Projects", path: "/projects" },
+    { name: "Custom Request", path: "/request" },
+    { name: "Terms", path: "/terms" },
+    { name: "Contact", path: "/contact" },
+  ];
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 hover-scale">
-            <img src={logo} alt="logo" className="h-12 w-12" />
-            <span className="font-bold text-xl gradient-text">Project Nexus</span>
-          </Link>
+    <nav className={`sticky top-0 z-50 transition-all duration-300 ${
+      scrolled ? "bg-white/80 backdrop-blur-md border-b border-slate-100 shadow-sm py-3" : "bg-white py-5"
+    }`}>
+      <div className="container mx-auto px-6 flex justify-between items-center">
+        
+        {/* Logo & Brand */}
+        <Link to="/" className="flex items-center gap-2 group">
+          {/* <img src={logo} alt="Logo" className="h-10 w-10 object-contain group-hover:rotate-12 transition-transform duration-300" /> */}
+          <span className="text-xl font-black tracking-tighter text-slate-900">
+            PROJECT<span className="text-indigo-600">NEXUS</span>
+          </span>
+        </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-6">
-            <Link to="/" className="text-foreground/80 hover:text-foreground transition-colors">
-              Home
+        {/* Desktop Navigation */}
+        <div className="hidden lg:flex items-center gap-8">
+          {navLinks.map((link) => (
+            <Link 
+              key={link.path}
+              to={link.path} 
+              className="text-sm font-semibold text-slate-600 hover:text-indigo-600 transition-all relative group"
+            >
+              {link.name}
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 transition-all group-hover:w-full" />
             </Link>
-            <Link to="/projects" className="text-foreground/80 hover:text-foreground transition-colors">
-              Projects
+          ))}
+        </div>
+
+        {/* Action Buttons / Profile */}
+        <div className="flex items-center gap-3">
+          {isAdmin && (
+            <Link to="/admin" className="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 text-amber-700 rounded-full text-xs font-bold border border-amber-100 hover:bg-amber-100 transition-colors">
+              <Shield className="h-3.5 w-3.5" />
+              Admin Panel
             </Link>
-            <Link to="/request" className="text-foreground/80 hover:text-foreground transition-colors">
-              Custom Request
-            </Link>
-            <Link to="/terms" className="text-foreground/80 hover:text-foreground transition-colors">
-              Terms & Conditions
-            </Link>
-            <Link to="/refund-policy" className="text-foreground/80 hover:text-foreground transition-colors">
-              Refund Policy
-            </Link>
-            <Link to="/contact" className="text-foreground/80 hover:text-foreground transition-colors">
-              Contact Us
-            </Link>
-            {isAdmin && (
-              <Link to="/admin" className="text-foreground/80 hover:text-foreground transition-colors flex items-center gap-1">
-                <Shield className="h-4 w-4" />
-                Admin
+          )}
+
+          <div className="h-8 w-[1px] bg-slate-100 mx-2 hidden md:block" />
+
+          {user ? (
+            <ProfileDropdown />
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link to="/auth">
+                <Button variant="ghost" className="text-slate-600 font-bold hover:bg-slate-50 rounded-xl">
+                  Log in
+                </Button>
               </Link>
-            )}
-          </div>
+              <Link to="/auth">
+                <Button className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 rounded-xl shadow-lg shadow-indigo-100 transition-all hover:scale-105 active:scale-95">
+                  Get Started
+                </Button>
+              </Link>
+            </div>
+          )}
 
-          {/* Auth Buttons */}
-          <div className="hidden md:flex items-center gap-3">
-            {user ? (
-              <Button
-                variant="ghost"
-                onClick={async () => {
-                  await signOut();
-                  navigate("/");
-                }}
-              >
-                Logout
-              </Button>
-            ) : (
-              <>
-                <Link to="/auth">
-                  <Button variant="ghost">Login</Button>
-                </Link>
-                <Link to="/auth">
-                  <Button className="glow-primary">Get Started</Button>
-                </Link>
-              </>
-            )}
-          </div>
-
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Toggle */}
           <button
-            className="md:hidden p-2"
+            className="lg:hidden p-2 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
+      </div>
 
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden py-4 animate-fade-in">
+      {/* Mobile Sidebar Overlay */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden fixed inset-0 top-[73px] bg-white z-[60] p-6 animate-in slide-in-from-right duration-300">
+          <div className="flex flex-col gap-6">
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className="text-2xl font-bold text-slate-900 hover:text-indigo-600"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {link.name}
+              </Link>
+            ))}
+            
+            <hr className="border-slate-100" />
+            
             <div className="flex flex-col gap-4">
-              <Link
-                to="/"
-                className="text-foreground/80 hover:text-foreground transition-colors py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Home
-              </Link>
-              <Link
-                to="/projects"
-                className="text-foreground/80 hover:text-foreground transition-colors py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Projects
-              </Link>
-              <Link
-                to="/request"
-                className="text-foreground/80 hover:text-foreground transition-colors py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Custom Request
-              </Link>
-              {isAdmin && (
-                <Link
-                  to="/admin"
-                  className="text-foreground/80 hover:text-foreground transition-colors py-2 flex items-center gap-2"
-                  onClick={() => setMobileMenuOpen(false)}
+              {user ? (
+                <Button 
+                  variant="destructive" 
+                  className="w-full h-12 rounded-xl font-bold"
+                  onClick={async () => {
+                    await signOut();
+                    navigate("/");
+                    setMobileMenuOpen(false);
+                  }}
                 >
-                  <Shield className="h-4 w-4" />
-                  Admin
-                </Link>
+                  Log out
+                </Button>
+              ) : (
+                <>
+                  <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>
+                    <Button variant="outline" className="w-full h-12 rounded-xl border-slate-200 font-bold">Login</Button>
+                  </Link>
+                  <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>
+                    <Button className="w-full h-12 bg-indigo-600 rounded-xl font-bold">Get Started</Button>
+                  </Link>
+                </>
               )}
-              <div className="flex flex-col gap-2 pt-4 border-t border-border">
-                {user ? (
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-start"
-                    onClick={async () => {
-                      await signOut();
-                      navigate("/");
-                      setMobileMenuOpen(false);
-                    }}
-                  >
-                    Logout
-                  </Button>
-                ) : (
-                  <>
-                    <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>
-                      <Button variant="ghost" className="w-full">Login</Button>
-                    </Link>
-                    <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>
-                      <Button className="w-full glow-primary">Get Started</Button>
-                    </Link>
-                  </>
-                )}
-              </div>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </nav>
   );
 };

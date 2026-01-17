@@ -5,7 +5,7 @@ import { AlertCircle } from "lucide-react";
 
 const RefundPolicy = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
       <main className="flex-1 pt-20">
         <div className="container mx-auto px-4 py-12">
@@ -21,13 +21,13 @@ const RefundPolicy = () => {
 
             <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 mb-8 flex items-start gap-3">
               <AlertCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-              <p className="text-sm">
+              <p className="text-sm text-black/50">
                 Please read this policy carefully before making a purchase. By purchasing from Project Nexus, 
                 you agree to the terms outlined in this refund and cancellation policy.
               </p>
             </div>
 
-            <Card className="glass mb-6">
+            <Card className="card mb-6">
               <CardHeader>
                 <CardTitle>1. Digital Product Refund Policy</CardTitle>
               </CardHeader>
@@ -53,7 +53,7 @@ const RefundPolicy = () => {
               </CardContent>
             </Card>
 
-            <Card className="glass mb-6">
+            <Card className="card mb-6">
               <CardHeader>
                 <CardTitle>2. Custom Project Cancellations</CardTitle>
               </CardHeader>
@@ -79,7 +79,7 @@ const RefundPolicy = () => {
               </CardContent>
             </Card>
 
-            <Card className="glass mb-6">
+            <Card className="card mb-6">
               <CardHeader>
                 <CardTitle>3. Refund Process</CardTitle>
               </CardHeader>
@@ -97,7 +97,7 @@ const RefundPolicy = () => {
               </CardContent>
             </Card>
 
-            <Card className="glass mb-6">
+            <Card className="card mb-6">
               <CardHeader>
                 <CardTitle>4. Eligible Refund Reasons</CardTitle>
               </CardHeader>
@@ -115,7 +115,7 @@ const RefundPolicy = () => {
               </CardContent>
             </Card>
 
-            <Card className="glass mb-6">
+            <Card className="card mb-6">
               <CardHeader>
                 <CardTitle>5. Non-Eligible Refund Reasons</CardTitle>
               </CardHeader>
@@ -134,7 +134,7 @@ const RefundPolicy = () => {
               </CardContent>
             </Card>
 
-            <Card className="glass mb-6">
+            <Card className="card mb-6">
               <CardHeader>
                 <CardTitle>6. Refund Method</CardTitle>
               </CardHeader>
@@ -151,7 +151,7 @@ const RefundPolicy = () => {
               </CardContent>
             </Card>
 
-            <Card className="glass mb-6">
+            <Card className="card mb-6">
               <CardHeader>
                 <CardTitle>7. Partial Refunds</CardTitle>
               </CardHeader>
@@ -167,7 +167,7 @@ const RefundPolicy = () => {
               </CardContent>
             </Card>
 
-            <Card className="glass">
+            <Card className="card">
               <CardHeader>
                 <CardTitle>8. Contact for Refunds</CardTitle>
               </CardHeader>

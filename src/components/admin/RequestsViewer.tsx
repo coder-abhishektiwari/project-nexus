@@ -103,7 +103,7 @@ const RequestsViewer = () => {
                     </div>
                     {request.suggested_name && (
                       <div className="text-xs text-gray-500 mt-1">
-                        **Name:** {request.suggested_name}
+                        <b>Name:</b> {request.suggested_name}
                       </div>
                     )}
                   </TableCell>

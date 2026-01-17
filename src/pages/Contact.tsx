@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 const Contact = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
       <main className="flex-1 pt-20">
         <div className="container mx-auto px-4 py-12">
@@ -20,7 +20,7 @@ const Contact = () => {
             </div>
 
             <div className="grid md:grid-cols-3 gap-6 mb-12">
-              <Card className="glass">
+              <Card className="card">
                 <CardHeader>
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                     <Mail className="h-6 w-6 text-primary" />
@@ -35,7 +35,7 @@ const Contact = () => {
                 </CardContent>
               </Card>
 
-              <Card className="glass">
+              <Card className="card">
                 <CardHeader>
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                     <Phone className="h-6 w-6 text-primary" />
@@ -50,7 +50,7 @@ const Contact = () => {
                 </CardContent>
               </Card>
 
-              <Card className="glass">
+              <Card className="card">
                 <CardHeader>
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                     <MapPin className="h-6 w-6 text-primary" />
@@ -68,7 +68,7 @@ const Contact = () => {
               </Card>
             </div>
 
-            <Card className="glass">
+            <Card className="card">
               <CardHeader>
                 <CardTitle>Business Information</CardTitle>
                 <CardDescription>Legal business details</CardDescription>

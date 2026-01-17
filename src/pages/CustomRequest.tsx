@@ -103,23 +103,23 @@ const CustomRequest = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
       <Navbar />
 
       <main className="container mx-auto px-4 pt-24 pb-16">
         <div className="max-w-3xl mx-auto animate-fade-in">
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Request a <span className="gradient-text">Custom Project</span>
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-4 text-gray-900">
+              Request a <span className="text-indigo-600">Custom Project</span>
             </h1>
-            <p className="text-muted-foreground text-lg">
+            <p className="text-gray-600 text-lg">
               Can't find what you're looking for? Tell us what you need and we'll build it for you.
             </p>
           </div>
 
           {/* Form */}
-          <Card className="glass border-border/50 p-8">
+          <Card className="bg-white shadow-2xl rounded-2xl p-8 border border-gray-200">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Full Name */}
               <div className="space-y-2">
@@ -127,7 +127,7 @@ const CustomRequest = () => {
                 <Input
                   id="fullName"
                   placeholder="John Doe"
-                  className="glass"
+                  className="my-input"
                   value={formData.fullName}
                   onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                   required
@@ -141,7 +141,7 @@ const CustomRequest = () => {
                   id="email"
                   type="email"
                   placeholder="john@example.com"
-                  className="glass"
+                  className="my-input"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
@@ -154,7 +154,7 @@ const CustomRequest = () => {
                 <Textarea
                   id="projectIdea"
                   placeholder="Describe your project idea in detail..."
-                  className="glass min-h-[120px]"
+                  className="my-input min-h-[120px]"
                   value={formData.projectIdea}
                   onChange={(e) => setFormData({ ...formData, projectIdea: e.target.value })}
                   required
@@ -167,7 +167,7 @@ const CustomRequest = () => {
                 <Input
                   id="technologies"
                   placeholder="e.g., React, Node.js, MongoDB"
-                  className="glass"
+                  className="my-input"
                   value={formData.technologies}
                   onChange={(e) => setFormData({ ...formData, technologies: e.target.value })}
                   required
@@ -180,7 +180,7 @@ const CustomRequest = () => {
                 <Input
                   id="projectName"
                   placeholder="My Awesome Project"
-                  className="glass"
+                  className="my-input"
                   value={formData.suggestedName}
                   onChange={(e) => setFormData({ ...formData, suggestedName: e.target.value })}
                 />
@@ -194,7 +194,7 @@ const CustomRequest = () => {
                   onValueChange={(value) => setFormData({ ...formData, budget: value })}
                   required
                 >
-                  <SelectTrigger className="glass">
+                  <SelectTrigger className="my-input">
                     <SelectValue placeholder="Select your budget" />
                   </SelectTrigger>
                   <SelectContent>
@@ -207,13 +207,13 @@ const CustomRequest = () => {
               </div>
 
               {/* College/Year */}
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid md:grid-cols-2 gap-6 ">
                 <div className="space-y-2">
                   <Label htmlFor="college">College/University</Label>
                   <Input
                     id="college"
                     placeholder="Your institution"
-                    className="glass"
+                    className="my-input"
                     value={formData.college}
                     onChange={(e) => setFormData({ ...formData, college: e.target.value })}
                   />
@@ -225,7 +225,7 @@ const CustomRequest = () => {
                     value={formData.year}
                     onValueChange={(value) => setFormData({ ...formData, year: value })}
                   >
-                    <SelectTrigger className="glass">
+                    <SelectTrigger className="my-input">
                       <SelectValue placeholder="Select year" />
                     </SelectTrigger>
                     <SelectContent>
@@ -259,16 +259,16 @@ const CustomRequest = () => {
           </Card>
 
           {/* Info Section */}
-          <div className="mt-12 grid md:grid-cols-3 gap-6">
-            <Card className="glass border-border/50 p-6 text-center">
+          <div className=" mt-12 grid md:grid-cols-3 gap-6">
+            <Card className="card border-border/50 p-10 text-center">
               <div className="text-3xl font-bold text-primary mb-2">24h</div>
               <p className="text-sm text-muted-foreground">Response Time</p>
             </Card>
-            <Card className="glass border-border/50 p-6 text-center">
+            <Card className="card border-border/50 p-10 text-center">
               <div className="text-3xl font-bold text-secondary mb-2">100%</div>
               <p className="text-sm text-muted-foreground">Custom Built</p>
             </Card>
-            <Card className="glass border-border/50 p-6 text-center">
+            <Card className="card border-border/50 p-10 text-center">
               <div className="text-3xl font-bold text-accent mb-2">∞</div>
               <p className="text-sm text-muted-foreground">Lifetime Support</p>
             </Card>

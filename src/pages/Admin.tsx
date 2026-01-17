@@ -10,42 +10,46 @@ import {
   User,
   LogOut,
 } from 'lucide-react';
-
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 import ProjectsManager from '@/components/admin/ProjectsManager';
 import RequestsViewer from '@/components/admin/RequestsViewer';
 import TransactionsViewer from '@/components/admin/TransactionsViewer';
 import UserManagement from '@/components/admin/UserManagement';
+import SellerRequests from '@/components/admin/SellerRequests';
 
 const ADMIN_TAB_KEY = 'adminActiveTab';
 const ADMIN_COLLAPSED_KEY = 'adminSidebarCollapsed';
 
 const Admin = () => {
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
 
   const [activeTab, setActiveTab] = useState(() => {
-        const savedTab = localStorage.getItem(ADMIN_TAB_KEY);
-        return savedTab || 'projects';
-    });
-  
+    const savedTab = localStorage.getItem(ADMIN_TAB_KEY);
+    return savedTab || 'projects';
+  });
+
   const [collapsed, setCollapsed] = useState(() => {
-        const savedCollapsed = localStorage.getItem(ADMIN_COLLAPSED_KEY);
-        return savedCollapsed === 'true'; 
-    });
+    const savedCollapsed = localStorage.getItem(ADMIN_COLLAPSED_KEY);
+    return savedCollapsed === 'true';
+  });
 
   useEffect(() => {
-        localStorage.setItem(ADMIN_TAB_KEY, activeTab);
-    }, [activeTab]);
+    localStorage.setItem(ADMIN_TAB_KEY, activeTab);
+  }, [activeTab]);
 
   useEffect(() => {
-        // boolean को string ('true' or 'false') के रूप में सेव करें
-        localStorage.setItem(ADMIN_COLLAPSED_KEY, String(collapsed));
-    }, [collapsed]);
+    localStorage.setItem(ADMIN_COLLAPSED_KEY, String(collapsed));
+  }, [collapsed]);
 
-    
+
   const menu = [
     { id: 'projects', label: 'Projects', icon: Package },
     { id: 'requests', label: 'Custom Requests', icon: FileText },
     { id: 'transactions', label: 'Transactions', icon: CreditCard },
     { id: 'users', label: 'Users', icon: Users },
+    { id: 'seller_requests', label: 'Seller Requests', icon: User },
   ];
 
   return (
@@ -132,11 +136,12 @@ const Admin = () => {
           </button>
 
           <button
-            className="
-        flex items-center gap-3 px-3 py-2 mt-3 rounded-lg group   // 🟢 1. ADD 'group' class to the button
-        hover:bg-red-700 w-full text-left
-        transition-colors duration-200
-    "
+            className="flex items-center gap-3 px-3 py-2 mt-3 rounded-lg group hover:bg-red-700 w-full text-left transition-colors duration-200"
+            
+            onClick={async () => {
+              await signOut();
+              navigate("/");
+            }}
           >
             {/* 🟢 2. Use group-hover:text-white on the ICON */}
             <LogOut className="h-5 w-5 text-red-500 group-hover:text-white transition-colors duration-200" />
@@ -167,6 +172,7 @@ const Admin = () => {
           {activeTab === 'requests' && <RequestsViewer />}
           {activeTab === 'transactions' && <TransactionsViewer />}
           {activeTab === 'users' && <UserManagement />}
+          {activeTab === 'seller_requests' && <SellerRequests />}
         </div>
       </main>
     </div>

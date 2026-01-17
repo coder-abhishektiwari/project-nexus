@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Code2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { Loader2, Mail, Lock, ShieldCheck, LogIn, ArrowLeft, User2Icon } from 'lucide-react';
+
 import { useAuth } from "@/hooks/useAuth";
 import { z } from "zod";
 
@@ -76,7 +78,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
       {/* Animated background */}
       <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/20 rounded-full blur-3xl animate-float" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-3xl animate-float" style={{ animationDelay: "1s" }} />
@@ -84,15 +86,15 @@ const Auth = () => {
       <div className="w-full max-w-md z-10 animate-fade-in">
         {/* Logo */}
         <Link to="/" className="flex items-center justify-center gap-2 mb-8">
-          <div className="p-2 rounded-lg bg-gradient-to-br from-primary to-secondary">
-            <Code2 className="h-8 w-8 text-primary-foreground" />
+          <div className="p-3 rounded-full bg-gradient-to-br from-primary to-secondary shadow-lg"> {/* 🟢 Rounded Full Logo */}
+            <ShieldCheck className="h-9 w-9 text-white" /> {/* 🟢 Icon Color White */}
           </div>
-          <span className="font-bold text-2xl gradient-text">ProjectHub</span>
+          <span className="font-extrabold text-3xl mt-3 text-gray-800 gradient-text">ProjectHub</span>
         </Link>
 
-        <Card className="glass border-border/50 p-8">
+        <Card className="card shadow-2xl p-8 bg-white/90 backdrop-blur-md">
           <Tabs defaultValue="login" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-8">
+            <TabsList className=" card grid w-full bg-white grid-cols-2 mb-8">
               <TabsTrigger value="login">Login</TabsTrigger>
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
             </TabsList>
@@ -102,28 +104,34 @@ const Auth = () => {
               <form onSubmit={handleLogin} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="login-email">Email</Label>
-                  <Input
-                    id="login-email"
-                    type="email"
-                    placeholder="your@email.com"
-                    className="glass"
-                    value={loginEmail}
-                    onChange={(e) => setLoginEmail(e.target.value)}
-                    required
-                  />
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" /> {/* 🟢 Icon added */}
+                    <Input
+                      id="login-email"
+                      type="email"
+                      placeholder="your@email.com"
+                      className="pl-10 h-12 border-gray-300 focus:border-primary focus:ring-primary transition text-black/60 bg-white"
+                      value={loginEmail}
+                      onChange={(e) => setLoginEmail(e.target.value)}
+                      required
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="login-password">Password</Label>
-                  <Input
-                    id="login-password"
-                    type="password"
-                    placeholder="••••••••"
-                    className="glass"
-                    value={loginPassword}
-                    onChange={(e) => setLoginPassword(e.target.value)}
-                    required
-                  />
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 " /> {/* 🟢 Icon added */}
+                    <Input
+                      id="login-password"
+                      type="password"
+                      placeholder="••••••••"
+                      className="pl-10 h-12 border-gray-300 focus:border-primary focus:ring-primary transition text-black/60 bg-white"
+                      value={loginPassword}
+                      onChange={(e) => setLoginPassword(e.target.value)}
+                      required
+                    />
+                  </div>
                 </div>
 
                 <Button
@@ -131,10 +139,20 @@ const Auth = () => {
                   className="w-full glow-primary"
                   disabled={loading}
                 >
-                  {loading ? "Logging in..." : "Login"}
+                  {loading ? (
+                    <>
+                      <Loader2 className="h-5 w-5 animate-spin" /> {/* 🟢 Loading Icon */}
+                      Logging in...
+                    </>
+                  ) : (
+                    <>
+                      <LogIn className="h-5 w-5" /> {/* 🟢 Login Icon */}
+                      Login to Dashboard
+                    </>
+                  )}
                 </Button>
 
-                <div className="text-center text-sm text-muted-foreground">
+                <div className="text-center text-sm text-black/70">
                   Forgot password? <a href="#" className="text-primary hover:underline">Reset it</a>
                 </div>
               </form>
@@ -145,40 +163,48 @@ const Auth = () => {
               <form onSubmit={handleSignup} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="signup-name">Full Name</Label>
-                  <Input
-                    id="signup-name"
-                    placeholder="John Doe"
-                    className="glass"
-                    value={signupName}
-                    onChange={(e) => setSignupName(e.target.value)}
-                    required
-                  />
+                  <div className="relative">
+                    <User2Icon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" /> {/* 🟢 Icon added */}
+                    <Input
+                      id="signup-name"
+                      placeholder="John Doe"
+                      className="pl-10 h-12 border-gray-300 focus:border-primary focus:ring-primary transition text-black/60 bg-white"
+                      value={signupName}
+                      onChange={(e) => setSignupName(e.target.value)}
+                      required
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="signup-email">Email</Label>
-                  <Input
-                    id="signup-email"
-                    type="email"
-                    placeholder="your@email.com"
-                    className="glass"
-                    value={signupEmail}
-                    onChange={(e) => setSignupEmail(e.target.value)}
-                    required
-                  />
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" /> {/* 🟢 Icon added */}
+                    <Input
+                      id="signup-email"
+                      type="email"
+                      placeholder="your@email.com"
+                      className="pl-10 h-12 border-gray-300 focus:border-primary focus:ring-primary transition text-black/60 bg-white"
+                      value={signupEmail}
+                      onChange={(e) => setSignupEmail(e.target.value)}
+                      required
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="signup-password">Password</Label>
-                  <Input
-                    id="signup-password"
-                    type="password"
-                    placeholder="••••••••"
-                    className="glass"
-                    value={signupPassword}
-                    onChange={(e) => setSignupPassword(e.target.value)}
-                    required
-                  />
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 " /> {/* 🟢 Icon added */}
+                    <Input
+                      id="signup-password"
+                      type="password"
+                      placeholder="••••••••"
+                      className="pl-10 h-12 border-gray-300 focus:border-primary focus:ring-primary transition text-black/60 bg-white"
+                      value={signupPassword}
+                      onChange={(e) => setSignupPassword(e.target.value)}
+                      required
+                    /></div>
                 </div>
 
                 <Button
@@ -198,7 +224,7 @@ const Auth = () => {
         </Card>
 
         <div className="text-center mt-6">
-          <Link to="/" className="text-muted-foreground hover:text-foreground text-sm">
+          <Link to="/" className="text-black/70 hover:text-foreground text-sm">
             ← Back to Home
           </Link>
         </div>
